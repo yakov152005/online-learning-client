@@ -1,0 +1,67 @@
+.container-sign {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 60px);
+    width: 100vw;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+}
+
+.form-container-sign {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 1px 4px 10px rgba(0, 0, 0, 2);
+    max-width: 350px;
+    width: 90%;
+}
+
+.form-title-sign {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    margin-top: 0.8rem;
+    text-align: center;
+    color: #333;
+}
+
+.input-sign {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 0.8rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.input-sign:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.btn-sign {
+    margin-top: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #2c3c8c;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-sign:hover {
+    background-color: #9198c8;
+}
+
+.error-message-sign {
+    margin-top: 0.8rem;
+    color: red;
+    font-size: 12px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+

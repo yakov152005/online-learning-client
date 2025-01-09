@@ -1,0 +1,71 @@
+.navbar-container {
+    width: 100%; /* מבטיח שהרוחב יהיה מלא */
+    position: sticky; /* נשאר סטטי בראש המסך */
+    top: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, #1e3c72, #2a5298); /* רקע מעבר צבעים */
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* תוכן ה-Navbar */
+.navbar-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px; /* מרווח פנימי */
+}
+
+/* רשימת הקישורים */
+.navbar-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-list li {
+    margin: 0 15px;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-size: 16px;
+    color: #f5f5f5;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffdd00;
+    border-bottom: 2px solid #ffdd00;
+}
+
+.nav-link.active {
+    color: #ffdd00;
+    font-weight: bold;
+    border-bottom: 2px solid #ffdd00;
+}
+
+/* כפתור Logout */
+.logout-button {
+    display: flex;
+    align-items: center;
+    background: #ff5f5f;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+.logout-button:hover {
+    background: #d43f3f;
+}
+
+.logout-icon {
+    margin-left: 8px;
+    font-size: 20px;
+    color: white;
+}
