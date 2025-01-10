@@ -1,20 +1,49 @@
 .container-sign {
     display: flex;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    /*
+    background: linear-gradient(135deg, #6ec1e4, #0052cc);
+     */
+}
+
+.left-section, .right-section {
+    flex: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 60px);
-    width: 100vw;
-    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    flex-direction: column;
+}
+
+.left-section {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.right-section {
+    background: linear-gradient(to bottom right, #2c3c8c, #ffffff);
+    color: white;
+    text-align: center;
+
 }
 
 .form-container-sign {
     background-color: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 1px 4px 10px rgba(0, 0, 0, 2);
-    max-width: 350px;
-    width: 90%;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.form-container-sign:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
 
 .form-title-sign {
     font-size: 22px;
@@ -65,3 +94,22 @@
     text-align: center;
 }
 
+.divider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.divider {
+    flex-grow: 1;
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
+.or-text {
+    margin: 0;
+    font-size: 14px;
+    color: gray;
+}
