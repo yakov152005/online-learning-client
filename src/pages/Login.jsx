@@ -48,7 +48,17 @@ export default function Login() {
                 cookies.set("token", response.data.verificationLogin.token, {path: "/"});
                 const token = cookies.get("token");
                 console.log(token);
+
+                if (!token) {
+                    setLoading(false);
+                    setErrorMessage("Your session has expired. Please log in again.");
+                    console.log("Your session has expired. Please log in again.");
+                    navigate(NAV_LOGIN);
+                    return;
+                }
+
                 setTimeout(() => {
+                    console.log("login...")
                     setLoading(false);
                     navigate(NAV_DASHBOARD);
                 }, 5000);
