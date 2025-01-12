@@ -6,7 +6,7 @@ import Login from "../pages/Login.jsx";
 import {NAV_DASHBOARD, NAV_ERROR, NAV_HOME, NAV_LOGIN, NAV_REGISTER} from "../utils/Constants.js";
 import Dashboard from "../pages/Dashboard.jsx";
 import Cookies from "universal-cookie";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import ValidateToken from "../api/ValidateToken.js";
 import NotFoundPage from "../pages/NotFoundPage.jsx";
 
@@ -14,12 +14,13 @@ export default function ManagerRoutes() {
     const cookies = new Cookies();
     const token = cookies.get("token");
     const navigate = useNavigate();
+    const [username, setUsername] = useState("");
     console.log("home page token check", token);
 
     const fetchToken = async ()=> {
         try {
             const api = new ValidateToken();
-            await api.validateTokenApi(token,navigate,cookies);
+            await api.validateTokenApi(token,navigate,cookies,setUsername);
         }catch (error){
             console.log("Error to fetching token",error);
         }
@@ -29,8 +30,10 @@ export default function ManagerRoutes() {
         if (token) {
             fetchToken();
             console.log("check login")
+            console.log("Username passed to manger:", username);
         }
-    }, [token, navigate, cookies]);
+    }, [token, navigate, cookies,username]);
+
 
     const handleLogout = () => {
         cookies.remove("token", {path: "/"});
@@ -54,7 +57,7 @@ export default function ManagerRoutes() {
                     )}
                     {token  && (
                         <>
-                            <Route path={NAV_DASHBOARD} element={<Dashboard/>}/>
+                            <Route path={NAV_DASHBOARD} element={<Dashboard username={username} />} />
                             <Route path={NAV_ERROR} element={<NotFoundPage/>}/>
                         </>
                     )}
