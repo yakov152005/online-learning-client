@@ -10,6 +10,7 @@ const NAV_REGISTER = "/register";
 const NAV_LOGIN = "/login";
 const NAV_DASHBOARD = "/dashboard";
 const NAV_ERROR = "*";
+const NAV_DEFAULT = "/";
 
 export {
     URL_SERVER_SIDE,
@@ -23,4 +24,5 @@ export {
     NAV_REGISTER,
     NAV_DASHBOARD,
     NAV_ERROR,
+    NAV_DEFAULT,
 }

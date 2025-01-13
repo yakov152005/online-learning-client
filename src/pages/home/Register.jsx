@@ -1,13 +1,13 @@
 import {useState} from "react";
 import axios from "axios";
-import {NAV_LOGIN, URL_REGISTER, URL_SERVER_SIDE} from "../utils/Constants.js";
+import {NAV_LOGIN, URL_REGISTER, URL_SERVER_SIDE} from "../../utils/Constants.js";
 import {useNavigate} from "react-router-dom";
-import "../css/SignInAndUp.css";
+import "../../css/home/SignInAndUp.css";
 import {TextField, Tooltip} from "@mui/material";
 import {IconUserCircle} from '@tabler/icons-react';
-import MathAnimation from "../components/MathAnimation.jsx";
-import LoadingAnimation from "../components/LoadingAnimation.jsx";
-import "../css/LoadingStyle.css"
+import MathAnimation from "../../components/animation/MathAnimation.jsx";
+import LoadingAnimation from "../../components/animation/LoadingAnimation.jsx";
+import "../../css/home/LoadingStyle.css"
 
 export default function Register() {
     const navigate = useNavigate();

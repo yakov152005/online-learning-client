@@ -1,14 +1,14 @@
-import {Route, Routes, useNavigate} from "react-router-dom";
-import Home from "../pages/Home.jsx";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import Home from "../../pages/home/Home.jsx";
 import NavBar from "./NavBar.jsx";
-import Register from "../pages/Register.jsx";
-import Login from "../pages/Login.jsx";
-import {NAV_DASHBOARD, NAV_ERROR, NAV_HOME, NAV_LOGIN, NAV_REGISTER} from "../utils/Constants.js";
-import Dashboard from "../pages/Dashboard.jsx";
+import Register from "../../pages/home/Register.jsx";
+import Login from "../../pages/home/Login.jsx";
+import {NAV_DASHBOARD, NAV_DEFAULT, NAV_ERROR, NAV_HOME, NAV_LOGIN, NAV_REGISTER} from "../../utils/Constants.js";
+import Dashboard from "../../pages/dashboard/Dashboard.jsx";
 import Cookies from "universal-cookie";
 import {useEffect, useState} from "react";
-import ValidateToken from "../api/ValidateToken.js";
-import NotFoundPage from "../pages/NotFoundPage.jsx";
+import ValidateToken from "../../api/ValidateToken.js";
+import NotFoundPage from "../../pages/home/NotFoundPage.jsx";
 
 export default function ManagerRoutes() {
     const cookies = new Cookies();
@@ -48,6 +48,7 @@ export default function ManagerRoutes() {
                 <Routes>
                     {!token && (
                         <>
+                            <Route path={NAV_DEFAULT} element={<Navigate to={NAV_LOGIN}/>}/>
                             <Route path={NAV_HOME} element={<Home/>}/>
                             <Route path={NAV_REGISTER} element={<Register/>}/>
                             <Route path={NAV_LOGIN} element={<Login onLogin={() => navigate(NAV_DASHBOARD)}/>}/>

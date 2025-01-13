@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import loginAnimation from "../assets/login-animation.json"
+import loginAnimation from "../../assets/animation/login-animation.json"
 
 export default function LoginAnimation() {
     return (

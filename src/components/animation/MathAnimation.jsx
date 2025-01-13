@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import mathAnimation from "../assets/math-animation.json"
+import mathAnimation from "../../assets/animation/math-animation.json"
 
 export default function MathAnimation() {
     return (

@@ -1,13 +1,13 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import axios from "axios";
-import {NAV_DASHBOARD, NAV_LOGIN, NAV_REGISTER, URL_LOGIN, URL_SERVER_SIDE} from "../utils/Constants.js";
+import {NAV_DASHBOARD, NAV_LOGIN, NAV_REGISTER, URL_LOGIN, URL_SERVER_SIDE} from "../../utils/Constants.js";
 import {TextField, Tooltip} from "@mui/material";
-import "../css/SignInAndUp.css"
+import "../../css/home/SignInAndUp.css"
 import Cookies from "universal-cookie";
 import {IconLogin2} from '@tabler/icons-react';
-import LoginAnimation from "../components/LoginAnimation.jsx";
-import LoadingAnimation from "../components/LoadingAnimation.jsx";
+import LoginAnimation from "../../components/animation/LoginAnimation.jsx";
+import LoadingAnimation from "../../components/animation/LoadingAnimation.jsx";
 
 
 export default function Login() {

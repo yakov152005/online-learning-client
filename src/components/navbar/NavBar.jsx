@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { NAV_DASHBOARD, NAV_HOME, NAV_LOGIN, NAV_REGISTER } from "../utils/Constants.js";
-import "../css/NavBarStyle.css";
-import BookAnimation from "./BookAnimation.jsx";
+import { NAV_DASHBOARD, NAV_HOME, NAV_LOGIN, NAV_REGISTER } from "../../utils/Constants.js";
+import "../../css/navbar/NavBarStyle.css";
+import BookAnimation from "../animation/BookAnimation.jsx";
 import {Tooltip} from "@mui/material";
 import {IconLogin2, IconUserCircle,IconHome } from "@tabler/icons-react";
 

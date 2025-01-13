@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import bookAnimation from "../assets/book-animation.json"
+import bookAnimation from "../../assets/animation/book-animation.json"
 
 export default function BookAnimation() {
     return (

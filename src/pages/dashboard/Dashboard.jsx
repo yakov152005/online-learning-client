@@ -1,12 +1,14 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {URL_GET_QUESTION, URL_SERVER_SIDE, URL_SUBMIT_ANSWER} from "../utils/Constants.js";
+import {URL_GET_QUESTION, URL_SERVER_SIDE, URL_SUBMIT_ANSWER} from "../../utils/Constants.js";
 
 export default function Dashboard({username}){
     const[category, setCategory] = useState(null);
     const[question, setQuestion] = useState(null);
     const[userAnswer, setUserAnswer] = useState(null);
     const[feedback, setFeedback] = useState(null);
+    const[success, setSuccess] = useState(null);
+    const[showExplanation,setShowExplanation] = useState(false);
 
 
     useEffect(() => {
@@ -38,6 +40,8 @@ export default function Dashboard({username}){
             });
             setQuestion(response.data.questionDto);
             setFeedback(null);
+            setSuccess(null);
+            setShowExplanation(false);
         } catch (error) {
             console.error("Error fetching new question:", error);
         }
@@ -59,14 +63,18 @@ export default function Dashboard({username}){
                 },
             });
 
-
-            setFeedback(response.data.message);
+            setSuccess(response.data.success);
+            setFeedback(response.data.error);
             setUserAnswer("");
+            setQuestion("");
         } catch (error) {
             console.error("Error submitting answer:", error);
         }
     };
 
+    const handleExplanation = () => {
+        setShowExplanation(true);
+    }
 
     return (
         <div>
@@ -100,12 +108,18 @@ export default function Dashboard({username}){
                             placeholder="Your answer"
                         />
                         <button onClick={handleSubmitAnswer}>Submit Answer</button>
+
+                        <br/>
+                        <button onClick={() => handleExplanation()}>
+                            Show Explanation
+                        </button>
+                        {showExplanation && <div style={{color:"gray"}}>{question.explanation}</div> }
                     </div>
                 )}
                 <button onClick={handleNewQuestion}>Get New Question</button>
             </div>
 
-            {feedback && <h3>Feedback: {feedback}</h3>}
+            {feedback && <h3>Feedback: <div style={{color: success ? "green" : "red"}}>{feedback}</div></h3>}
         </div>
     );
 }
