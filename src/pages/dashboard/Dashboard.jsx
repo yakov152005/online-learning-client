@@ -1,125 +1,204 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {URL_GET_QUESTION, URL_SERVER_SIDE, URL_SUBMIT_ANSWER} from "../../utils/Constants.js";
+import {URL_GET_DASHBOARD_USER, URL_SERVER_SIDE} from "../../utils/Constants.js";
 
 export default function Dashboard({username}){
-    const[category, setCategory] = useState(null);
-    const[question, setQuestion] = useState(null);
-    const[userAnswer, setUserAnswer] = useState(null);
-    const[feedback, setFeedback] = useState(null);
-    const[success, setSuccess] = useState(null);
-    const[showExplanation,setShowExplanation] = useState(false);
+    const [streaks, setStreaks] = useState(null);
+    const [openQuestions, setOpenQuestion] = useState(null);
+    const [weakPoints, setWeakPoints] = useState(null);
+    const [currentLevels, setCurrentLevels] = useState(null);
+    const [correctAnswersPerCategory, setCorrectAnswersPerCategory] = useState(null);
+    const [incorrectAnswersPerCategory, setIncorrectAnswersPerCategory] = useState(null);
+    const [successRate, setSuccessRate] = useState(null);
+    const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(null);
+    const [totalIncorrectAnswers, setTotalIncorrectAnswers] = useState(null);
+    const [showOpenQuestion, setShowOpenQuestion] = useState(false);
 
+    const fetchDashboardDetails = async () => {
+        try {
+            const response = await axios.get(URL_SERVER_SIDE + URL_GET_DASHBOARD_USER, {
+                params: {
+                    username: username
+                }
+            });
+
+            if (response.data.success){
+                const result = response.data;
+                setStreaks(result.successStreak);
+                setOpenQuestion(result.openQuestions);
+                setWeakPoints(result.weakPoints);
+                setCurrentLevels(result.currentLevels);
+                setCorrectAnswersPerCategory(result.correctAnswersPerCategory);
+                setIncorrectAnswersPerCategory(result.incorrectAnswersPerCategory);
+                setSuccessRate(result.successRate);
+                setTotalCorrectAnswers(result.totalCorrectAnswers);
+                setTotalIncorrectAnswers(result.totalIncorrectAnswers);
+            }else {
+                console.log(response.data.success);
+            }
+        }catch (error){
+            console.error("Error to fetching dashboard data!",error);
+        }
+    }
 
     useEffect(() => {
         console.log("Dashboard username:", username);
     }, [username]);
 
-    const handleCategorySelection = async (selectedCategory) =>{
-        try {
-            setCategory(selectedCategory);
-            const response = await axios.get(URL_SERVER_SIDE + URL_GET_QUESTION,{
-               params: {username: username, category: selectedCategory}
-            });
-
-            setQuestion(response.data.questionDto);
-            setFeedback(null);
-        }catch (error){
-            console.error("Error selecting category: ", error);
+    useEffect(() => {
+        if (username){
+            fetchDashboardDetails();
         }
-    }
+    }, [username]);
 
-    const handleNewQuestion = async () => {
-        if (!category) {
-            alert("Please select a category first!");
-            return;
-        }
-        try {
-            const response = await axios.get(URL_SERVER_SIDE + URL_GET_QUESTION, {
-                params: { username: username, category },
-            });
-            setQuestion(response.data.questionDto);
-            setFeedback(null);
-            setSuccess(null);
-            setShowExplanation(false);
-        } catch (error) {
-            console.error("Error fetching new question:", error);
-        }
-    };
-
-    const handleSubmitAnswer = async () => {
-        if (!question) {
-            alert("No question to answer!");
-            return;
-        }
-        try {
-            console.log("Submitting answer with questionId:", question.id, "userAnswer:", userAnswer, "username:", username);
-
-            const response = await axios.post(URL_SERVER_SIDE + URL_SUBMIT_ANSWER, null, {
-                params: {
-                    questionId: question.id,
-                    userAnswer: String(userAnswer),
-                    username: username,
-                },
-            });
-
-            setSuccess(response.data.success);
-            setFeedback(response.data.error);
-            setUserAnswer("");
-            setQuestion("");
-        } catch (error) {
-            console.error("Error submitting answer:", error);
-        }
-    };
-
-    const handleExplanation = () => {
-        setShowExplanation(true);
-    }
 
     return (
         <div>
-            <h1>Online Learning</h1>
             <div>
-                <h2>Select Category:</h2>
-                <button onClick={() => handleCategorySelection("addition")}>
-                    Addition
-                </button>
-                <button onClick={() => handleCategorySelection("subtraction")}>
-                    Subtraction
-                </button>
-                <button onClick={() => handleCategorySelection("multiplication")}>
-                    Multiplication
-                </button>
-                <button onClick={() => handleCategorySelection("division")}>
-                    Division
-                </button>
-            </div>
-
-            {category && <h3>Active Category: {category}</h3>}
-
-            <div>
-                {question && (
-                    <div>
-                        <h2>Question: {question.content}</h2>
-                        <input
-                            type="text"
-                            value={userAnswer}
-                            onChange={(e) => setUserAnswer(e.target.value)}
-                            placeholder="Your answer"
-                        />
-                        <button onClick={handleSubmitAnswer}>Submit Answer</button>
-
-                        <br/>
-                        <button onClick={() => handleExplanation()}>
-                            Show Explanation
-                        </button>
-                        {showExplanation && <div style={{color:"gray"}}>{question.explanation}</div> }
-                    </div>
+                {currentLevels && currentLevels.length > 0 ? (
+                    <>
+                        <h5 style={{color:"gray"}}>Current Levels:</h5>
+                        {currentLevels.map(({category, level}) => (
+                            <ul key={category}>
+                                <li>
+                                    <strong>Category:</strong> {category}
+                                </li>
+                                <li>
+                                    <strong>Level:</strong> {level}
+                                </li>
+                            </ul>
+                        ))}
+                    </>
+                ) : (
+                    <p>No current levels available.</p>
                 )}
-                <button onClick={handleNewQuestion}>Get New Question</button>
             </div>
 
-            {feedback && <h3>Feedback: <div style={{color: success ? "green" : "red"}}>{feedback}</div></h3>}
+            <div>
+                {streaks && streaks.length > 0 ? (
+                    <>
+                        <h5 style={{color: "gray"}}>Streaks:</h5>
+                        {streaks.map(({category, successStreak}) => (
+                            <ul key={category}>
+                                <li>
+                                    <strong>Category:</strong> {category}
+                                </li>
+                                <li>
+                                    <strong>Success streaks: </strong> {successStreak}
+                                </li>
+                            </ul>
+                        ))}
+                    </>
+                ) : (
+                    <p>No Streaks available.</p>
+                )}
+            </div>
+
+            <div>
+                {weakPoints && weakPoints.length > 0 ? (
+                    <>
+                        <h5 style={{color: "gray"}}>Weak Points:</h5>
+                        {weakPoints.map(({category, errorCount}) => (
+                            <ul key={category}>
+                                <li>
+                                    <strong>Category:</strong> {category}
+                                </li>
+                                <li>
+                                    <strong>Error Count: </strong> {errorCount}
+                                </li>
+                            </ul>
+                        ))}
+                    </>
+                ) : (
+                    <p>No Weak Points available.</p>
+                )}
+            </div>
+
+            <div>
+                {correctAnswersPerCategory && Object.keys(correctAnswersPerCategory).length > 0 ? (
+                    <>
+                        <h5 style={{color: "gray"}}>Correct Answers Per Category:</h5>
+                        <ul>
+                            {Object.entries(correctAnswersPerCategory).map(([category, correctAnswers]) => (
+                                <li key={category}>
+                                    <strong>Category:</strong> {category}, <strong>
+                                    Correct Answers:</strong> {correctAnswers}
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                ) : (
+                    <p>No correct answers available.</p>
+                )}
+            </div>
+
+            <div>
+                {incorrectAnswersPerCategory && Object.keys(incorrectAnswersPerCategory).length > 0 ? (
+                    <>
+                        <h5 style={{color: "gray"}}>Incorrect Answers Per Category:</h5>
+                        <ul>
+                            {Object.entries(incorrectAnswersPerCategory).map(([category, incorrectAnswers]) => (
+                                <li key={category}>
+                                    <strong>Category:</strong> {category}, <strong>
+                                    Correct Answers:</strong> {incorrectAnswers}
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                ) : (
+                    <p>No Incorrect answers available.</p>
+                )}
+            </div>
+
+            <div>
+                {successRate && Object.keys(successRate).length > 0 ? (
+                    <>
+                        <h5 style={{color: "gray"}}>Success Rate Per Category:</h5>
+                        <ul>
+                            {Object.entries(successRate).map(([category, success]) => (
+                                <li key={category}>
+                                    <strong>Category:</strong> {category}, <strong>
+                                    Correct Answers:</strong> {success}
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                ) : (
+                    <p>No Success rate available.</p>
+                )}
+            </div>
+
+            <div>
+                <strong>Total correct answers:</strong> {totalCorrectAnswers}
+            </div>
+
+            <div>
+                <strong>Total incorrect answers:</strong> {totalIncorrectAnswers}
+            </div>
+
+            <button onClick={()=> (setShowOpenQuestion(true))}>Show open question</button>
+
+            {showOpenQuestion &&
+                <div>
+                    {openQuestions && openQuestions.length > 0 ? (
+                        <>
+                            <h5 style={{color: "gray"}}> Open Questions:</h5>
+                            {openQuestions.map(({id, category, content, difficulty}) => (
+                                <ul key={id}>
+                                    <li>
+                                        <p><strong>Category:</strong> {category}</p>
+                                        <p><strong>Content: </strong> {content}</p>
+                                        <p><strong>Level: </strong> {difficulty}</p>
+                                    </li>
+                                </ul>
+                            ))}
+                        </>
+                    ) : (
+                        <p>No Open Questions available.</p>
+                    )}
+                </div>
+            }
+
         </div>
     );
 }

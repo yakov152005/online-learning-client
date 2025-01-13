@@ -1,5 +1,5 @@
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
-import Home from "../../pages/home/Home.jsx";
+import Home from "../../pages/dashboard/Home.jsx";
 import NavBar from "./NavBar.jsx";
 import Register from "../../pages/home/Register.jsx";
 import Login from "../../pages/home/Login.jsx";
@@ -49,15 +49,15 @@ export default function ManagerRoutes() {
                     {!token && (
                         <>
                             <Route path={NAV_DEFAULT} element={<Navigate to={NAV_LOGIN}/>}/>
-                            <Route path={NAV_HOME} element={<Home/>}/>
                             <Route path={NAV_REGISTER} element={<Register/>}/>
-                            <Route path={NAV_LOGIN} element={<Login onLogin={() => navigate(NAV_DASHBOARD)}/>}/>
+                            <Route path={NAV_LOGIN} element={<Login onLogin={() => navigate(NAV_HOME)}/>}/>
                             <Route path={NAV_ERROR} element={<NotFoundPage/>}/>
 
                         </>
                     )}
                     {token  && (
                         <>
+                            <Route path={NAV_HOME} element={<Home username={username}/>}/>
                             <Route path={NAV_DASHBOARD} element={<Dashboard username={username} />} />
                             <Route path={NAV_ERROR} element={<NotFoundPage/>}/>
                         </>

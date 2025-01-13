@@ -4,6 +4,7 @@ const URL_LOGIN = "/login-user";
 const URL_VALIDATE_TOKEN = "/validateToken";
 const URL_GET_QUESTION = "/get-question";
 const URL_SUBMIT_ANSWER = "/submit-answer";
+const URL_GET_DASHBOARD_USER = "/get-dashboard-user";
 
 const NAV_HOME = "/home";
 const NAV_REGISTER = "/register";
@@ -19,6 +20,7 @@ export {
     URL_VALIDATE_TOKEN,
     URL_GET_QUESTION,
     URL_SUBMIT_ANSWER,
+    URL_GET_DASHBOARD_USER,
     NAV_HOME,
     NAV_LOGIN,
     NAV_REGISTER,
