@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import axios from "axios";
-import {NAV_DASHBOARD, NAV_HOME, NAV_LOGIN, NAV_REGISTER, URL_LOGIN, URL_SERVER_SIDE} from "../../utils/Constants.js";
+import {NAV_HOME, NAV_LOGIN, NAV_REGISTER, URL_LOGIN, URL_SERVER_SIDE} from "../../utils/Constants.js";
 import {TextField, Tooltip} from "@mui/material";
 import "../../css/home/SignInAndUp.css"
 import Cookies from "universal-cookie";

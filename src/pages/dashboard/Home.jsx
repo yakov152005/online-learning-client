@@ -1,14 +1,17 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {URL_GET_QUESTION, URL_SERVER_SIDE, URL_SUBMIT_ANSWER} from "../../utils/Constants.js";
+import { URL_GET_QUESTION, URL_SERVER_SIDE, URL_SUBMIT_ANSWER} from "../../utils/Constants.js";
+import LevelUpAnimation from "../../components/animation/LevelUpAnimation.jsx";
+
 
 export default function Home({username}){
     const[category, setCategory] = useState(null);
     const[question, setQuestion] = useState(null);
-    const[userAnswer, setUserAnswer] = useState(null);
+    const[userAnswer, setUserAnswer] = useState("");
     const[feedback, setFeedback] = useState(null);
     const[success, setSuccess] = useState(null);
     const[showExplanation,setShowExplanation] = useState(false);
+    const [isLevelUp, setIsLevelUp] = useState(null);
 
 
     useEffect(() => {
@@ -62,9 +65,19 @@ export default function Home({username}){
                     username: username,
                 },
             });
+            console.log("Server response:", response.data);
 
             setSuccess(response.data.success);
             setFeedback(response.data.error);
+            setIsLevelUp(response.data.levelUp);
+
+
+            if (response.data.levelUp){
+                setIsLevelUp(true);
+                setTimeout(() => {
+                    setIsLevelUp(false);
+                }, 3000);
+            }
             setUserAnswer("");
             setQuestion("");
         } catch (error) {
@@ -78,6 +91,16 @@ export default function Home({username}){
 
     return (
         <div>
+            {isLevelUp && (
+                <div className="loading-overlay">
+                    <div className="loading-box">
+                        <p>Level Up!
+                            <LevelUpAnimation/>
+                        </p>
+                    </div>
+                </div>
+            )}
+
             <h1>Online Learning</h1>
             <div>
                 <h2>Select Category:</h2>
@@ -92,6 +115,9 @@ export default function Home({username}){
                 </button>
                 <button onClick={() => handleCategorySelection("division")}>
                     Division
+                </button>
+                <button onClick={() => handleCategorySelection("wordProblem")}>
+                    Word Problem
                 </button>
             </div>
 
