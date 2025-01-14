@@ -113,7 +113,7 @@ export default function Home({username}){
                         <button onClick={() => handleExplanation()}>
                             Show Explanation
                         </button>
-                        {showExplanation && <div style={{color:"gray"}}>{question.explanation}</div> }
+                        {showExplanation && <div style={{color: "gray"}}>{question.explanation}</div>}
                     </div>
                 )}
                 <button onClick={handleNewQuestion}>Get New Question</button>

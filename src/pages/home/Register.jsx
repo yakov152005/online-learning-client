@@ -100,7 +100,7 @@ export default function Register() {
                 setTimeout(() => {
                     setLoading(false);
                     navigate(NAV_LOGIN);
-                }, 5000);
+                }, 3000);
             } else {
                 setErrorMessage(response.data.error);
                 setLoading(false);

@@ -12,6 +12,8 @@ export default function Dashboard({username}){
     const [successRate, setSuccessRate] = useState(null);
     const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(null);
     const [totalIncorrectAnswers, setTotalIncorrectAnswers] = useState(null);
+    const [totalUnansweredQuestion, setTotalUnansweredQuestion] = useState(null);
+    const [totalSuccessRate, setTotalSuccessRate] = useState(null);
     const [showOpenQuestion, setShowOpenQuestion] = useState(false);
 
     const fetchDashboardDetails = async () => {
@@ -33,6 +35,8 @@ export default function Dashboard({username}){
                 setSuccessRate(result.successRate);
                 setTotalCorrectAnswers(result.totalCorrectAnswers);
                 setTotalIncorrectAnswers(result.totalIncorrectAnswers);
+                setTotalUnansweredQuestion(result.totalUnansweredQuestion);
+                setTotalSuccessRate(result.totalSuccessRate);
             }else {
                 console.log(response.data.success);
             }
@@ -140,7 +144,7 @@ export default function Dashboard({username}){
                             {Object.entries(incorrectAnswersPerCategory).map(([category, incorrectAnswers]) => (
                                 <li key={category}>
                                     <strong>Category:</strong> {category}, <strong>
-                                    Correct Answers:</strong> {incorrectAnswers}
+                                    Incorrect Answers:</strong> {incorrectAnswers}
                                 </li>
                             ))}
                         </ul>
@@ -157,8 +161,8 @@ export default function Dashboard({username}){
                         <ul>
                             {Object.entries(successRate).map(([category, success]) => (
                                 <li key={category}>
-                                    <strong>Category:</strong> {category}, <strong>
-                                    Correct Answers:</strong> {success}
+                                    <strong>Category: </strong> {category},
+                                    <strong> Success Rate: </strong> {success}
                                 </li>
                             ))}
                         </ul>
@@ -169,14 +173,26 @@ export default function Dashboard({username}){
             </div>
 
             <div>
-                <strong>Total correct answers:</strong> {totalCorrectAnswers}
+                <h5 style={{color: "gray"}}>Total:</h5>
+                <ul>
+                    <li>
+                        <strong>Correct answers:</strong> {totalCorrectAnswers}
+                    </li>
+
+                    <li>
+                        <strong>Incorrect answers:</strong> {totalIncorrectAnswers}
+                    </li>
+                    <li>
+                        <strong>Success Rate answers:</strong> {totalSuccessRate}
+                    </li>
+                    <li>
+                        <strong>Unanswered Question:</strong> {totalUnansweredQuestion}
+                    </li>
+
+                </ul>
             </div>
 
-            <div>
-                <strong>Total incorrect answers:</strong> {totalIncorrectAnswers}
-            </div>
-
-            <button onClick={()=> (setShowOpenQuestion(true))}>Show open question</button>
+            <button onClick={() => (setShowOpenQuestion(true))}>Show open question</button>
 
             {showOpenQuestion &&
                 <div>
