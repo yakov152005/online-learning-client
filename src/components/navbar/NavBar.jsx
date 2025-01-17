@@ -3,7 +3,7 @@ import {NAV_DASHBOARD, NAV_HOME, NAV_LOGIN, NAV_REGISTER} from "../../utils/Cons
 import "../../css/navbar/NavBarStyle.css";
 import BookAnimation from "../animation/BookAnimation.jsx";
 import {Tooltip} from "@mui/material";
-import {IconLogin2, IconUserCircle, IconHome,IconDashboard} from "@tabler/icons-react";
+import {IconLogin2, IconUserCircle, IconHome,IconChartBarPopular,IconLogout } from "@tabler/icons-react";
 
 // eslint-disable-next-line react/prop-types
 export default function NavBar({isLoggedIn, onLogout}) {
@@ -72,7 +72,7 @@ export default function NavBar({isLoggedIn, onLogout}) {
                                     </NavLink>
                                 </li>
                             </Tooltip>
-                            <Tooltip title="Dashboard">
+                            <Tooltip title="Statistics">
                                 <li>
                                     <NavLink
                                         to={NAV_DASHBOARD}
@@ -80,17 +80,19 @@ export default function NavBar({isLoggedIn, onLogout}) {
                                             isActive ? "nav-link active" : "nav-link"
                                         }
                                     >
-                                        <strong> Dashboard</strong><br/>&nbsp;
-                                        <IconDashboard stroke={2} size={20}
-                                                  style={{marginLeft: "27px", marginTop: "-4px", marginBottom: "2px"}}/>
+                                        <strong> Statistics</strong><br/>&nbsp;
+                                        <IconChartBarPopular stroke={2} size={20}
+                                                  style={{marginLeft: "22px", marginTop: "-4px", marginBottom: "2px"}}/>
                                     </NavLink>
                                 </li>
                             </Tooltip>
                             <Tooltip title="Logout">
-                                <li>
-                                    <button className="logout-button" onClick={onLogout}>
-                                        <span>Logout</span>
-                                        <i className="bi bi-box-arrow-right logout-icon"></i>
+                                <li style={{marginTop:"-5px"}}>
+                                    <button className="btn btn-danger" onClick={onLogout}>
+                                        <strong>Logout</strong>
+                                        <br/>
+                                        <IconLogout stroke={2} size={20}
+                                                    style={{marginLeft: "12px"}}/>
                                     </button>
                                 </li>
                             </Tooltip>

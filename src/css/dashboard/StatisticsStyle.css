@@ -1,0 +1,44 @@
+.table-container {
+    overflow-x: auto;
+    max-width: 800px;
+    max-height: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-container th,
+.table-container td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+
+.box-container {
+    max-width: 800px;
+    max-height: 400px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.box-container-2 {
+    max-width: 800px;
+    max-height: 400px;
+    padding: 10px;
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.small-text {
+    color: gray;
+    font-size: 10px;
+    margin-top: 10px;
+}
