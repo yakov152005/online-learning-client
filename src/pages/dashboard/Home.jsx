@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import axios from "axios";
 import { URL_GET_QUESTION, URL_SERVER_SIDE, URL_SUBMIT_ANSWER} from "../../utils/Constants.js";
 import { ReactSketchCanvas } from "react-sketch-canvas";
@@ -135,7 +135,10 @@ export default function Home({username}){
 
             <h1 className="title">Online Learning</h1>
             <div className="category-selection">
-                <h2>Select Topic:</h2>
+                <h2 style={{marginTop: "15px"}}>
+                    <mark style={{borderRadius: "15px"}}>Select Topic:</mark>
+                </h2>
+
                 <button onClick={() => (handleShowTopic("invoice"))}>חשבון</button>
                 <button onClick={() => (handleShowTopic("wordProblem"))}>שאלות מילוליות</button>
                 <button onClick={() => (handleShowTopic("math"))}>מתמטיקה</button>
@@ -143,49 +146,68 @@ export default function Home({username}){
 
                 {showInvoice && (
                     <>
-                        <h2>Select Category:</h2>
+                        <h2 style={{marginTop: "15px"}}>
+                            <mark style={{borderRadius: "15px"}}>Select Category:</mark>
+                        </h2>
                         <button onClick={() => handleCategorySelection("addition")}>
-                            Addition
+                            חיבור
                         </button>
                         <button onClick={() => handleCategorySelection("subtraction")}>
-                            Subtraction
+                            חיסור
                         </button>
                         <button onClick={() => handleCategorySelection("multiplication")}>
-                            Multiplication
+                            כפל
                         </button>
                         <button onClick={() => handleCategorySelection("division")}>
-                            Division
+                            חילוק
                         </button>
                     </>
                 )}
 
                 {showWordProblem && (
                     <>
-                        <h2>Select Category:</h2>
+
+                        <h2 style={{marginTop: "15px"}}>
+                            <mark style={{borderRadius: "15px"}}>Select Category:</mark>
+                        </h2>
                         <button onClick={() => handleCategorySelection("wordProblem")}>
-                            Word Problem
+                            בעיות מילוליות
                         </button>
                     </>
                 )}
 
+
                 {showMath && (
                     <>
-                        <h2>Select Category:</h2>
+                        <h2 style={{marginTop: "15px"}}>
+                            <mark style={{borderRadius: "15px"}}>Select Category:</mark>
+                        </h2>
                         <button onClick={() => handleCategorySelection("invoiceSeries")}>
-                            Invoice Series
+                            סדרה חשבונית
                         </button>
                         <button onClick={() => handleCategorySelection("quadraticEquation")}>
-                            Quadratic Equation
+                            משוואה ריבועית
+                        </button>
+                        <button onClick={() => handleCategorySelection("equationOfTheLine")}>
+                            משוואת קו ישר
                         </button>
                     </>
                 )}
             </div>
 
-            {category && <h3>Active Category: {category}</h3>}
+            {category && <h3 style={{marginTop: "15px"}}><mark style={{borderRadius: "15px"}}>Active Category: </mark>{category}</h3>}
             <div className="question-section">
-                {question && (
-                    <>
-                    <h2>Question: {question.content}</h2>
+            {question && (
+                <>
+                    <h2 style={{marginTop: "15px"}}>
+                        <mark style={{borderRadius: "15px"}}>Question:</mark>
+                        {question.content.split('*').map((part, index) => (
+                            <React.Fragment key={index}>
+                                {part}
+                                {index < question.content.split('*').length - 1 && <br/>}
+                            </React.Fragment>
+                        ))}
+                    </h2>
                     <div className="sketch-container">
                         <ReactSketchCanvas
                             ref={canvasRef}
@@ -223,12 +245,17 @@ export default function Home({username}){
                             >Hide Explanation
                             </button>
                             <div className="explanation">
-                                {question.explanation}
+                                {question.explanation.split('*').map((part, index) => (
+                                    <React.Fragment key={index}>
+                                        {part}
+                                        {index < question.explanation.split('*').length - 1 && <br/>}
+                                    </React.Fragment>
+                                ))}
                             </div>
                         </>
                     )}
-                    </>
-                )}
+                </>
+            )}
 
                 {category && (
                     <button

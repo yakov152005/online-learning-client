@@ -168,7 +168,7 @@ export default function Dashboard({username}) {
                 data: Object.values(correctAnswersPerCategory || {}),
                 backgroundColor: "rgba(75, 192, 192, 0.6)",
                 borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 1,
+                borderWidth: 3,
             },
             {
                 label: "Incorrect Answers",
@@ -391,10 +391,10 @@ export default function Dashboard({username}) {
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                {openQuestions.map(({id, category, content, difficulty}) => (
+                                                {openQuestions.map(({ id, category, content, difficulty }) => (
                                                     <tr key={id}>
                                                         <td>{category}</td>
-                                                        <td>{content}</td>
+                                                        <td>{content.replace(/\*/g, ' ')}</td>
                                                         <td>{difficulty}</td>
                                                     </tr>
                                                 ))}
