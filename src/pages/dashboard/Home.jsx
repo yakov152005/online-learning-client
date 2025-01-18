@@ -174,6 +174,9 @@ export default function Home({username}){
                         <button onClick={() => handleCategorySelection("invoiceSeries")}>
                             Invoice Series
                         </button>
+                        <button onClick={() => handleCategorySelection("quadraticEquation")}>
+                            Quadratic Equation
+                        </button>
                     </>
                 )}
             </div>

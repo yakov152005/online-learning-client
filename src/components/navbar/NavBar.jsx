@@ -6,13 +6,16 @@ import {Tooltip} from "@mui/material";
 import {IconLogin2, IconUserCircle, IconHome,IconChartBarPopular,IconLogout } from "@tabler/icons-react";
 
 // eslint-disable-next-line react/prop-types
-export default function NavBar({isLoggedIn, onLogout}) {
+export default function NavBar({isLoggedIn, onLogout, username}) {
     return (
         <nav className="navbar-container">
             <div className="navbar-content">
 
                 <a className="navbar-brand" href={isLoggedIn ? NAV_HOME : NAV_LOGIN}>
                     <BookAnimation/>
+                </a>
+                <a className="name-nav">
+                    Hello {isLoggedIn ? username : "Guest"}
                 </a>
 
                 <ul className="navbar-list">
@@ -82,12 +85,16 @@ export default function NavBar({isLoggedIn, onLogout}) {
                                     >
                                         <strong> Statistics</strong><br/>&nbsp;
                                         <IconChartBarPopular stroke={2} size={20}
-                                                  style={{marginLeft: "22px", marginTop: "-4px", marginBottom: "2px"}}/>
+                                                             style={{
+                                                                 marginLeft: "22px",
+                                                                 marginTop: "-4px",
+                                                                 marginBottom: "2px"
+                                                             }}/>
                                     </NavLink>
                                 </li>
                             </Tooltip>
                             <Tooltip title="Logout">
-                                <li style={{marginTop:"-5px"}}>
+                                <li style={{marginTop: "-5px"}}>
                                     <button className="btn btn-danger" onClick={onLogout}>
                                         <strong>Logout</strong>
                                         <br/>

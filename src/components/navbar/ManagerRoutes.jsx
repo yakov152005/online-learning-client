@@ -42,7 +42,7 @@ export default function ManagerRoutes() {
 
     return (
         <div>
-            <NavBar isLoggedIn={!!token} onLogout={handleLogout}/>
+            <NavBar isLoggedIn={!!token} onLogout={handleLogout} username={username}/>
 
             <div>
                 <Routes>

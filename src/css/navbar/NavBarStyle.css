@@ -56,6 +56,14 @@
     border-bottom: 2px solid #ffdd00;
 }
 
+.name-nav{
+    color: #ffdd00;
+    text-decoration: none;
+    margin-right: auto;
+    margin-left: 15px;
+    font-size: 30px;
+    font-family: 'Fredoka One', cursive;
+}
 
 
 
