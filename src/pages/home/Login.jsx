@@ -2,12 +2,13 @@ import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import axios from "axios";
 import {NAV_HOME, NAV_LOGIN, NAV_REGISTER, URL_LOGIN, URL_SERVER_SIDE} from "../../utils/Constants.js";
-import {TextField, Tooltip} from "@mui/material";
+import {IconButton, InputAdornment, TextField, Tooltip} from "@mui/material";
 import "../../css/home/SignInAndUp.css"
 import Cookies from "universal-cookie";
 import {IconLogin2} from '@tabler/icons-react';
 import LoginAnimation from "../../components/animation/LoginAnimation.jsx";
 import LoadingAnimation from "../../components/animation/LoadingAnimation.jsx";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 
 export default function Login() {
@@ -21,6 +22,13 @@ export default function Login() {
 
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleShowPassword = () => {
+        setShowPassword((prevState) => !prevState);
+    };
+
 
     const handleChange = (event) => {
         const {id, value} = event.target;
@@ -106,12 +114,25 @@ export default function Login() {
                             <TextField
                                 id="password"
                                 label="Password"
-                                type="password"
+                                type={!showPassword ? "password" : "text"}
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
                                 value={formData.password}
                                 onChange={handleChange}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={handleShowPassword} edge="end">
+                                                {
+                                                    formData.password.length > 0 && (
+                                                        showPassword ? <Visibility /> : <VisibilityOff />
+                                                    )
+                                                }
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
 
                             <button

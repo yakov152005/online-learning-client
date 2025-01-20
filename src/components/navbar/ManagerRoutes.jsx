@@ -9,13 +9,13 @@ import Cookies from "universal-cookie";
 import {useEffect, useState} from "react";
 import ValidateToken from "../../api/ValidateToken.js";
 import NotFoundPage from "../../pages/home/NotFoundPage.jsx";
+import ScrollToTop from "../../utils/ScrollToTop.js";
 
 export default function ManagerRoutes() {
     const cookies = new Cookies();
     const token = cookies.get("token");
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
-    console.log("home page token check", token);
 
     const fetchToken = async ()=> {
         try {
@@ -29,7 +29,7 @@ export default function ManagerRoutes() {
     useEffect(() => {
         if (token) {
             fetchToken();
-            console.log("check login")
+            console.log("home page token check", token);
             console.log("Username passed to manger:", username);
         }
     }, [token, navigate, cookies,username]);
@@ -41,10 +41,11 @@ export default function ManagerRoutes() {
     };
 
     return (
-        <div>
+        <>
             <NavBar isLoggedIn={!!token} onLogout={handleLogout} username={username}/>
+            <ScrollToTop />
 
-            <div>
+            <>
                 <Routes>
                     {!token && (
                         <>
@@ -63,7 +64,7 @@ export default function ManagerRoutes() {
                         </>
                     )}
                 </Routes>
-            </div>
-        </div>
+            </>
+        </>
     )
 }

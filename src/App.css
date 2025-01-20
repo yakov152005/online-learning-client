@@ -15,7 +15,7 @@ html {
   scrollbar-width: thin;
   overflow-y: scroll;
   scrollbar-color: #2c3c8c #9198c8;
-
+  scroll-behavior: smooth;
 }
 
 body, #root {

@@ -18,6 +18,7 @@ import {
     CategoryScale,
     LinearScale,
 } from "chart.js";
+import QuestionTable from "../../components/QuestionTable.jsx";
 
 ChartJS.register(
     RadarController,
@@ -40,6 +41,7 @@ export default function Dashboard({username}) {
     const [error, setError] = useState(null);
     const [streaks, setStreaks] = useState(null);
     const [openQuestions, setOpenQuestion] = useState(null);
+    const [questionsAnsweredIncorrectly, setQuestionsAnsweredIncorrectly] = useState(null);
     const [weakPoints, setWeakPoints] = useState(null);
     const [currentLevels, setCurrentLevels] = useState(null);
     const [correctAnswersPerCategory, setCorrectAnswersPerCategory] = useState(null);
@@ -50,6 +52,8 @@ export default function Dashboard({username}) {
     const [totalUnansweredQuestion, setTotalUnansweredQuestion] = useState(null);
     const [totalSuccessRate, setTotalSuccessRate] = useState(null);
     const [showOpenQuestion, setShowOpenQuestion] = useState(false);
+    const [showAnsweredIncorrectly, setShowAnsweredIncorrectly] = useState(false);
+
 
     const fetchDashboardDetails = async () => {
         setLoading(true);
@@ -66,6 +70,7 @@ export default function Dashboard({username}) {
                 const result = response.data;
                 setStreaks(result.successStreak);
                 setOpenQuestion(result.openQuestions);
+                setQuestionsAnsweredIncorrectly(result.questionsAnsweredIncorrectly);
                 setWeakPoints(result.weakPoints);
                 setCurrentLevels(result.currentLevels);
                 setCorrectAnswersPerCategory(result.correctAnswersPerCategory);
@@ -358,58 +363,43 @@ export default function Dashboard({username}) {
                 </div>
             </Grid2>
 
-            <Box   className="box-container">
-                {!showOpenQuestion &&
-                    <button
-                        className={"btn btn-outline-info"}
-                        onClick={() => (setShowOpenQuestion(true))} >
-                        Show open question
-                    </button>
-                }
-
-                {showOpenQuestion && (
-                    <Grid2 item xs={12}>
+            <Box className="box-container" display="flex" gap={2}>
+                <Box className="box-section">
+                    {!showOpenQuestion ? (
                         <button
                             className={"btn btn-outline-info"}
-                            onClick={() => setShowOpenQuestion(false)}>
-                            Hide Open Questions
+                            onClick={() => setShowOpenQuestion(true)}
+                        >
+                            Show Open Questions
                         </button>
-                        {openQuestions && openQuestions.length > 0 ? (
-                            <Card>
-                                <CardContent>
-                                    <Typography variant="h5" color="gray" gutterBottom>
-                                        Open Questions
-                                    </Typography>
-                                    <Box className="box-container-2">
-                                        <div className="table-container">
-                                            <table>
-                                                <thead>
-                                                <tr>
-                                                    <th>Category</th>
-                                                    <th>Content</th>
-                                                    <th>Difficulty</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                {openQuestions.map(({ id, category, content, difficulty }) => (
-                                                    <tr key={id}>
-                                                        <td>{category}</td>
-                                                        <td>{content.replace(/\*/g, ' ')}</td>
-                                                        <td>{difficulty}</td>
-                                                    </tr>
-                                                ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                        ) : (
-                            <Typography>No Open Questions Available.</Typography>
-                        )}
-                    </Grid2>
-                )}
+                    ) : (
+                        <QuestionTable
+                            title="Open Questions"
+                            questions={openQuestions}
+                            onHide={() => setShowOpenQuestion(false)}
+                        />
+                    )}
+                </Box>
+
+
+                <Box className="box-section">
+                    {!showAnsweredIncorrectly ? (
+                        <button
+                            className={"btn btn-outline-info"}
+                            onClick={() => setShowAnsweredIncorrectly(true)}
+                        >
+                            Show Questions for Practice
+                        </button>
+                    ) : (
+                        <QuestionTable
+                            title="Questions for Practice"
+                            questions={questionsAnsweredIncorrectly}
+                            onHide={() => setShowAnsweredIncorrectly(false)}
+                        />
+                    )}
+                </Box>
             </Box>
+
         </Box>
     );
 }

@@ -3,11 +3,12 @@ import axios from "axios";
 import {NAV_LOGIN, URL_REGISTER, URL_SERVER_SIDE} from "../../utils/Constants.js";
 import {useNavigate} from "react-router-dom";
 import "../../css/home/SignInAndUp.css";
-import {TextField, Tooltip} from "@mui/material";
+import {IconButton, InputAdornment, TextField, Tooltip} from "@mui/material";
 import {IconUserCircle} from '@tabler/icons-react';
 import MathAnimation from "../../components/animation/MathAnimation.jsx";
 import LoadingAnimation from "../../components/animation/LoadingAnimation.jsx";
-import "../../css/home/LoadingStyle.css"
+import "../../css/home/LoadingStyle.css";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -27,6 +28,18 @@ export default function Register() {
 
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+
+    const handleShowPassword = () => {
+        setShowPassword((prevState) => !prevState);
+    };
+
+    const handleShowConfirmPassword = () =>{
+        setShowConfirmPassword(prevState => !prevState);
+    }
 
     const handleChange = (event) => {
         const {id, value} = event.target;
@@ -165,7 +178,7 @@ export default function Register() {
                             <TextField
                                 id="password"
                                 label="Password"
-                                type="password"
+                                type={!showPassword ? "password" : "text"}
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
@@ -182,11 +195,25 @@ export default function Register() {
                                             : <div style={styleSuccess}>Look good ✅ </div>
                                         : ""
                                 }
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={handleShowPassword} edge="end">
+                                                {
+                                                    formData.password.length > 0 && (
+                                                    showPassword ? <Visibility /> : <VisibilityOff />
+                                                    )
+                                                }
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
+
                             <TextField
                                 id="passwordConfirm"
                                 label="Confirm Password"
-                                type="password"
+                                type={!showConfirmPassword ? "password" : "text"}
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
@@ -203,7 +230,22 @@ export default function Register() {
                                             : <div style={styleSuccess}>Look good ✅ </div>
                                         : ""
                                 }
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={handleShowConfirmPassword} edge="end">
+                                                {
+                                                    formData.passwordConfirm.length > 0 && (
+                                                        showConfirmPassword ? <Visibility /> : <VisibilityOff />
+                                                    )
+                                                }
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
+
+
 
                             <TextField
                                 id="email"
