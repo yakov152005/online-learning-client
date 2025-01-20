@@ -12,6 +12,10 @@ body {
 
 html {
   height: 100%;
+  scrollbar-width: thin;
+  overflow-y: scroll;
+  scrollbar-color: #2c3c8c #9198c8;
+
 }
 
 body, #root {

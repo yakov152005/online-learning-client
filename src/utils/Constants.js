@@ -13,6 +13,10 @@ const NAV_DASHBOARD = "/dashboard";
 const NAV_ERROR = "*";
 const NAV_DEFAULT = "/";
 
+const TIMER_LEVEL_UP = 3000;
+const SECOND = 1000;
+const FOR_NEW_QUESTION = 5;
+
 export {
     URL_SERVER_SIDE,
     URL_REGISTER,
@@ -27,4 +31,7 @@ export {
     NAV_DASHBOARD,
     NAV_ERROR,
     NAV_DEFAULT,
+    TIMER_LEVEL_UP,
+    SECOND,
+    FOR_NEW_QUESTION,
 }

@@ -1,6 +1,13 @@
 import React, {useRef, useState} from "react";
 import axios from "axios";
-import { URL_GET_QUESTION, URL_SERVER_SIDE, URL_SUBMIT_ANSWER} from "../../utils/Constants.js";
+import {
+    FOR_NEW_QUESTION,
+    SECOND,
+    TIMER_LEVEL_UP,
+    URL_GET_QUESTION,
+    URL_SERVER_SIDE,
+    URL_SUBMIT_ANSWER
+} from "../../utils/Constants.js";
 import { ReactSketchCanvas } from "react-sketch-canvas";
 import LevelUpAnimation from "../../components/animation/LevelUpAnimation.jsx";
 import "../../css/dashboard/HomeStyle.css"
@@ -18,7 +25,9 @@ export default function Home({username}){
     const [showWordProblem, setShowWordProblem] = useState(false);
     const [showMath, setShowMath] = useState(false);
     const canvasRef = useRef();
-
+    const [timer, setTimer] = useState(null);
+    const [isCountdownActive, setIsCountdownActive] = useState(false);
+    const countdownInterval = useRef(null);
 
     const handleCategorySelection = async (selectedCategory) =>{
         try {
@@ -78,12 +87,40 @@ export default function Home({username}){
                 setIsLevelUp(true);
                 setTimeout(() => {
                     setIsLevelUp(false);
-                }, 3000);
+                }, TIMER_LEVEL_UP);
             }
             setUserAnswer("");
             setQuestion("");
         } catch (error) {
             console.error("Error submitting answer:", error);
+        }finally {
+            startCountdown();
+        }
+    };
+
+    const startCountdown = () => {
+        let countdown = FOR_NEW_QUESTION;
+        setTimer(countdown);
+        setIsCountdownActive(true);
+
+        countdownInterval.current = setInterval(() => {
+            countdown -= 1;
+            setTimer(countdown);
+            if (countdown <= 0) {
+                clearInterval(countdownInterval.current);
+                handleNewQuestion();
+                setIsCountdownActive(false);
+            }
+        }, SECOND);
+    };
+
+    const stopCountdown = () => {
+        if (countdownInterval.current) {
+            clearInterval(countdownInterval.current);
+            setIsCountdownActive(false);
+            setTimer(null);
+            setCategory(null);
+            setFeedback(null);
         }
     };
 
@@ -257,12 +294,23 @@ export default function Home({username}){
                 </>
             )}
 
-                {category && (
+                {(category && !isCountdownActive) && (
                     <button
                         className={"btn - btn-outline-info"}
                         onClick={handleNewQuestion}>
                         Get New Question
                     </button>
+                )}
+
+                {isCountdownActive && (
+                    <div>
+                        <p>Next question in: {timer} seconds</p>
+                        <button
+                            className={"btn - btn-outline-danger"}
+                            onClick={stopCountdown}>
+                            Stop Question
+                        </button>
+                    </div>
                 )}
 
             </div>
