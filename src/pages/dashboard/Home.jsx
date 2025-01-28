@@ -28,6 +28,12 @@ export default function Home({username}){
     const [timer, setTimer] = useState(null);
     const [isCountdownActive, setIsCountdownActive] = useState(false);
     const countdownInterval = useRef(null);
+    const [showCanvas, setShowCanvas] = useState(false);
+    const [solution,setSolution] = useState("");
+    const [showSolution, setShowSolution] = useState(false);
+
+
+
 
     const handleCategorySelection = async (selectedCategory) =>{
         try {
@@ -37,6 +43,7 @@ export default function Home({username}){
             });
 
             setQuestion(response.data.questionDto);
+            setSuccess(null);
             setFeedback(null);
         }catch (error){
             console.error("Error selecting category: ", error);
@@ -48,10 +55,15 @@ export default function Home({username}){
             alert("Please select a category first!");
             return;
         }
+
         try {
+            setQuestion(null);
+            setSolution("");
+
             const response = await axios.get(URL_SERVER_SIDE + URL_GET_QUESTION, {
                 params: { username: username, category },
             });
+
             setQuestion(response.data.questionDto);
             setFeedback(null);
             setSuccess(null);
@@ -82,6 +94,13 @@ export default function Home({username}){
             setFeedback(response.data.error);
             setIsLevelUp(response.data.levelUp);
 
+            if (!response.data.success) {
+                setShowSolution(true);
+                setSolution(response.data.solution);
+            } else {
+                setShowSolution(false);
+                setSolution("");
+            }
 
             if (response.data.levelUp){
                 setIsLevelUp(true);
@@ -89,6 +108,7 @@ export default function Home({username}){
                     setIsLevelUp(false);
                 }, TIMER_LEVEL_UP);
             }
+
             setUserAnswer("");
             setQuestion("");
         } catch (error) {
@@ -245,26 +265,50 @@ export default function Home({username}){
                             </React.Fragment>
                         ))}
                     </h2>
-                    <div className="sketch-container">
-                        <ReactSketchCanvas
-                            ref={canvasRef}
-                            strokeWidth={3}
-                            strokeColor="black"
-                            allowOnlyPointerType="all"
-                        />
-                    </div>
-                    <button className="clear-button" onClick={clearCanvas}>
-                        Clear Canvas
-                    </button>
                     <input
                         type="text"
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}
                         placeholder="Enter your answer"
                         className="answer-input"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey) {
+                                e.preventDefault();
+                                if (userAnswer.trim()) {
+                                    handleSubmitAnswer();
+                                }
+                            }
+                        }}
                     />
                     <button className="submit-button" onClick={handleSubmitAnswer}>Submit Answer</button>
+                    {showCanvas ? (
+                        <>
+                            <div className="sketch-container">
+                                <ReactSketchCanvas
+                                    ref={canvasRef}
+                                    strokeWidth={3}
+                                    strokeColor="black"
+                                    allowOnlyPointerType="all"
+                                />
+                            </div>
+                            <button className="clear-button" onClick={clearCanvas}>
+                                Clear Canvas
+                            </button>
+                            <button className="clear-button" onClick={() =>{setShowCanvas(false)}}>
+                                Hide Canvas
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button className="clear-button" onClick={() => {
+                                setShowCanvas(true)
+                            }}>
+                                Show Canvas
+                            </button>
+                        </>
+                    )
 
+                    }
 
                     <br/>
 
@@ -304,7 +348,7 @@ export default function Home({username}){
 
                 {isCountdownActive && (
                     <div>
-                        <p>Next question in: {timer} seconds</p>
+                    <p>Next question in: {timer} seconds</p>
                         <button
                             className={"btn - btn-outline-danger"}
                             onClick={stopCountdown}>
@@ -315,7 +359,17 @@ export default function Home({username}){
 
             </div>
 
-            {feedback && <div className={`feedback ${success ? "success" : "error"}`}>{feedback}</div>}
+            {feedback &&
+                <div className={`feedback ${success ? "success" : "error"}`}>{
+                    feedback}
+                </div>
+            }
+            {feedback && showSolution && (
+                <div className="solution">
+                    <h3>The Solution is:</h3>
+                    <p>{solution}</p>
+                </div>
+            )}
         </div>
     );
 }

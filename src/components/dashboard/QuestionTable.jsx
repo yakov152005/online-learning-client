@@ -1,5 +1,5 @@
 import {Box, Card, CardContent, Grid2, Typography} from "@mui/material";
-import "../css/dashboard/StatisticsStyle.css";
+import "../../css/dashboard/StatisticsStyle.css";
 
 export default function QuestionTable  ({ title, questions, onHide }){
     return (

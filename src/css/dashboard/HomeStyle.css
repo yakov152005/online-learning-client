@@ -99,3 +99,10 @@
 .feedback.error {
     color: red;
 }
+
+.solution{
+    color: blue;
+    margin-top: 10px;
+    font-size: 38px;
+    text-align: center;
+}
