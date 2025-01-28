@@ -89,7 +89,7 @@ export default function ManagerDashboard({username}) {
     return (
         <div style={{padding: "20px",marginBottom:"40px"}}>
             <div style={{marginBottom: "20px"}}>
-                <label>
+                <label style={{color: viewMode === "charts" ? "blue" : "gray"}}>
                     <input
                         type="radio"
                         name="viewMode"
@@ -99,7 +99,7 @@ export default function ManagerDashboard({username}) {
                     />
                     Charts View
                 </label>
-                <label style={{marginLeft: "15px"}}>
+                <label style={{marginLeft: "15px",color: viewMode === "text" ? "blue" : "gray"}}>
                     <input
                         type="radio"
                         name="viewMode"

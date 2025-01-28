@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {
     FOR_NEW_QUESTION,
@@ -31,6 +31,7 @@ export default function Home({username}){
     const [showCanvas, setShowCanvas] = useState(false);
     const [solution,setSolution] = useState("");
     const [showSolution, setShowSolution] = useState(false);
+    const [activeCategoryHb, setActiveCategoryHb] = useState("");
 
 
 
@@ -170,6 +171,33 @@ export default function Home({username}){
         }
     }
 
+    const handleActiveCategory = (category) => {
+        switch (category) {
+            case "addition":
+                return "חיבור";
+            case "subtraction":
+                return "חיסור";
+            case "multiplication":
+                return "כפל";
+            case "division":
+                return "חילוק";
+            case "wordProblem":
+                return "בעיות מילוליות";
+            case "invoiceSeries":
+                return "סדרה חשבונית";
+            case "quadraticEquation":
+                return "משוואה ריבועית";
+            case "equationOfTheLine":
+                return "משוואת קו הישר";
+            default:
+                return "";
+        }
+    };
+
+    useEffect(() => {
+        setActiveCategoryHb(handleActiveCategory(category));
+    }, [category]);
+
     const clearCanvas = () => {
         if (canvasRef.current) {
             canvasRef.current.clearCanvas();
@@ -252,7 +280,11 @@ export default function Home({username}){
                 )}
             </div>
 
-            {category && <h3 style={{marginTop: "15px"}}><mark style={{borderRadius: "15px"}}>Active Category: </mark>{category}</h3>}
+            {category &&
+                <h3 style={{marginTop: "15px"}}><mark style={{borderRadius: "15px"}}>Active Category:</mark>
+                    {activeCategoryHb}
+                </h3>
+            }
             <div className="question-section">
             {question && (
                 <>
@@ -280,7 +312,13 @@ export default function Home({username}){
                             }
                         }}
                     />
-                    <button className="submit-button" onClick={handleSubmitAnswer}>Submit Answer</button>
+                    <button
+                        className={!userAnswer.trim() ? "submit-button-disabled" : "submit-button"}
+                        onClick={handleSubmitAnswer}
+                        disabled={!userAnswer.trim()}
+                    >
+                        Submit Answer
+                    </button>
                     {showCanvas ? (
                         <>
                             <div className="sketch-container">
@@ -294,7 +332,9 @@ export default function Home({username}){
                             <button className="clear-button" onClick={clearCanvas}>
                                 Clear Canvas
                             </button>
-                            <button className="clear-button" onClick={() =>{setShowCanvas(false)}}>
+                            <button className="clear-button" onClick={() => {
+                                setShowCanvas(false)
+                            }}>
                                 Hide Canvas
                             </button>
                         </>

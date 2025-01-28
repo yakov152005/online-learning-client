@@ -30,17 +30,17 @@ ChartJS.register(
 
 
 export default function ChartsDashboardView({
-                                      streaks,
-                                      weakPoints,
-                                      currentLevels,
-                                      correctAnswersPerCategory,
-                                      incorrectAnswersPerCategory,
-                                      successRate,
-                                      totalCorrectAnswers,
-                                      totalIncorrectAnswers,
-                                      totalUnansweredQuestion,
-                                      totalSuccessRate
-                                  }) {
+                                                streaks,
+                                                weakPoints,
+                                                currentLevels,
+                                                correctAnswersPerCategory,
+                                                incorrectAnswersPerCategory,
+                                                successRate,
+                                                totalCorrectAnswers,
+                                                totalIncorrectAnswers,
+                                                totalUnansweredQuestion,
+                                                totalSuccessRate
+                                            }) {
 
     const currentLevelData = {
         labels: currentLevels ? currentLevels.map(({category}) => category) : [],
@@ -54,6 +54,11 @@ export default function ChartsDashboardView({
             },
         ],
     };
+
+    const maxLevel = currentLevels
+        ? Math.max(...currentLevels.map(({level}) => level), 4)
+        : 4;
+
 
     const streakData = {
         labels: streaks ? streaks.map(({category}) => category) : [],
@@ -93,19 +98,26 @@ export default function ChartsDashboardView({
         ],
     };
 
+    const allCategories = Array.from(
+        new Set([
+            ...Object.keys(correctAnswersPerCategory || {}),
+            ...Object.keys(incorrectAnswersPerCategory || {})
+        ])
+    );
+
     const correctIncorrectData = {
-        labels: Object.keys(correctAnswersPerCategory || {}),
+        labels: allCategories,
         datasets: [
             {
                 label: "Correct Answers",
-                data: Object.values(correctAnswersPerCategory || {}),
+                data: allCategories.map(category => correctAnswersPerCategory[category] || 0),
                 backgroundColor: "rgba(75, 192, 192, 0.6)",
                 borderColor: "rgba(75, 192, 192, 1)",
                 borderWidth: 3,
             },
             {
                 label: "Incorrect Answers",
-                data: Object.values(incorrectAnswersPerCategory || {}),
+                data: allCategories.map(category => incorrectAnswersPerCategory[category] || 0),
                 backgroundColor: "rgba(255, 99, 132, 0.6)",
                 borderColor: "rgba(255, 99, 132, 1)",
                 borderWidth: 1,
@@ -113,7 +125,7 @@ export default function ChartsDashboardView({
         ],
     };
 
-    const barOptions = {
+    const barOptionsCorrectVsIncorrect = {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
@@ -165,11 +177,14 @@ export default function ChartsDashboardView({
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" color={"gray"} gutterBottom>
-                                        <strong> Current Levels</strong>
+                                        <strong> Current Levels 📊</strong>
                                     </Typography>
                                     <Bar data={currentLevelData}
                                          width={700} height={300}
-                                         options={{responsive: false, scales: {y: {beginAtZero: true, max: 6,},},}}
+                                         options={{
+                                             responsive: false,
+                                             scales: {y: {beginAtZero: true, max: maxLevel,},},
+                                         }}
                                     />
                                     <div style={{color: "gray", fontSize: "10px", marginTop: "10px"}}>
                                         <p>* current level for each subject</p>
@@ -184,7 +199,7 @@ export default function ChartsDashboardView({
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" color={"gray"} gutterBottom>
-                                        <strong>Streaks</strong>
+                                        <strong>Streaks 🔥 </strong>
                                     </Typography>
                                     <Bar data={streakData}
                                          width={700} height={300}
@@ -206,7 +221,28 @@ export default function ChartsDashboardView({
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" color={"gray"} gutterBottom>
-                                        <strong> Weak Points</strong>
+                                        <strong>Correct ✅ vs Incorrect Answers ❌</strong>
+                                    </Typography>
+                                    <Box sx={{height: "300px"}}>
+                                        <Bar
+                                            data={correctIncorrectData}
+                                            options={barOptionsCorrectVsIncorrect}/>
+                                    </Box>
+                                    <div style={{color: "gray", fontSize: "10px", marginTop: "10px"}}>
+                                        <p>* number of questions answered correctly/incorrectly
+                                            By subject name.</p>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </Grid2>
+                    </div>
+
+                    <div style={{marginTop: "30px"}}>
+                        <Grid2 item xs={12} sm={6} md={4}>
+                            <Card>
+                                <CardContent>
+                                    <Typography variant="h6" color={"gray"} gutterBottom>
+                                        <strong> Weak Points ⚠️ </strong>
                                     </Typography>
                                     <Bar data={weakPointsData}
                                          width={700} height={300}
@@ -225,69 +261,53 @@ export default function ChartsDashboardView({
                         </Grid2>
                     </div>
 
-                    <div style={{marginTop: "30px"}}>
-                        <Grid2 item xs={12} sm={6} md={4}>
-                            <Card>
-                                <CardContent>
-                                    <Typography variant="h6" color={"gray"} gutterBottom>
-                                        <strong>Correct vs Incorrect Answers</strong>
-                                    </Typography>
-                                    <Box sx={{height: "300px"}}>
-                                        <Bar data={correctIncorrectData} options={barOptions}/>
-                                    </Box>
-                                    <div style={{color: "gray", fontSize: "10px", marginTop: "10px"}}>
-                                        <p>* number of questions answered correctly/incorrectly
-                                            By subject name.</p>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </Grid2>
-                    </div>
+                </div>
 
-                    <div style={{marginTop: "30px"}}>
-                        <Grid2 item xs={12} sm={6} md={4}>
-                            <Card>
-                                <CardContent>
-                                    <Typography variant="h6" color={"gray"} gutterBottom>
-                                        <strong>Success Rate Per Category</strong>
-                                    </Typography>
-                                    <div style={{height: "811px"}}>
-                                        <Radar data={radarData} options={radarOptions}/>
-                                    </div>
-                                    <div style={{color: "gray", fontSize: "10px", marginTop: "10px"}}>
-                                        <p>* success rates by topic.</p>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </Grid2>
-                    </div>
+                <div style={{marginLeft: "10px", marginTop: "-10px"}}>
+                    <Grid2 item xs={12} sm={6} md={4}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6" color={"gray"} gutterBottom>
+                                    <strong>Success Rate Per Category 📈</strong>
+                                </Typography>
+                                <div style={{height: "1000px", width: "700px"}}>
+                                    <Radar data={radarData} options={radarOptions}/>
+                                </div>
+                                <div style={{color: "gray", fontSize: "10px", marginTop: "10px"}}>
+                                    <p>* success rates by topic.</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </Grid2>
+                </div>
 
 
-                    <div style={{marginTop: "30px"}}>
-                        <Grid2 item xs={12} sm={6} md={4}>
-                            <Card>
-                                <CardContent>
-                                    <Typography variant="h6" color={"gray"} gutterBottom>
-                                        <strong>Total</strong>
-                                    </Typography>
-                                    <Pie data={totalAnswersData} width={700} height={1212}
-                                         options={{responsive: false}}/>
-                                    <li style={{padding: "10px"}}>
-                                        <strong style={{color: "green"}}>Correct answers</strong> {totalCorrectAnswers}
-                                        <strong style={{color: "red", marginLeft: "10px"}}> Incorrect
-                                            answers</strong> {totalIncorrectAnswers}
-                                        <strong style={{color: "turquoise", marginLeft: "10px"}}> Unanswered
-                                            Question</strong> {totalUnansweredQuestion}
-                                    </li>
+                <div style={{marginLeft: "-10px", marginTop: "-10px"}}>
+                    <Grid2 item xs={12} sm={6} md={4}>
+                        <Card>
+                            <CardContent>
+                                <Typography variant="h6" color={"gray"} gutterBottom>
+                                    <strong>Total Summary 📋</strong>
+                                </Typography>
+                                <Pie
+                                    data={totalAnswersData}
+                                    width={700} height={953}
+                                    options={{responsive: false}}
+                                />
+                                <li style={{padding: "10px"}}>
+                                    <strong style={{color: "green"}}>Correct answers</strong> {totalCorrectAnswers}
+                                    <strong style={{color: "red", marginLeft: "10px"}}> Incorrect
+                                        answers</strong> {totalIncorrectAnswers}
+                                    <strong style={{color: "turquoise", marginLeft: "10px"}}> Unanswered
+                                        Question</strong> {totalUnansweredQuestion}
+                                </li>
 
-                                    <li style={{padding: "10px"}}>
-                                        <strong>Success Rate answers:</strong> {totalSuccessRate}
-                                    </li>
-
-                                </CardContent>
-                            </Card>
-                        </Grid2>
-                    </div>
+                                <li style={{padding: "10px"}}>
+                                    <strong>Success Rate answers:</strong> {" "}{parseFloat(totalSuccessRate).toFixed(2)}%
+                                </li>
+                            </CardContent>
+                        </Card>
+                    </Grid2>
                 </div>
             </Grid2>
         </Box>

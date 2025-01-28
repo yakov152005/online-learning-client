@@ -11,136 +11,118 @@ export default function TextDashboardView({
                                                totalSuccessRate
                                            }){
     return (
-        <div>
-            <div>
+        <div style={{ padding: "20px", fontFamily: "Arial, sans-serif", lineHeight: "1.6" }}>
+
+            <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ color: "#555" }}>📊 Current Levels:</h4>
                 {currentLevels && currentLevels.length > 0 ? (
-                    <>
-                        <h5 style={{color:"gray"}}>Current Levels:</h5>
-                        {currentLevels.map(({category, level}) => (
-                            <ul key={category}>
-                                <li>
-                                    <strong>Category:</strong> {category}
-                                </li>
-                                <li>
-                                    <strong>Level:</strong> {level}
-                                </li>
-                            </ul>
+                    <ul style={{ marginLeft: "20px" }}>
+                        {currentLevels.map(({ category, level }) => (
+                            <li key={category}>
+                                <strong>Category:</strong> {category} | <strong>Level:</strong> {level}
+                            </li>
                         ))}
-                    </>
+                    </ul>
                 ) : (
-                    <p>No current levels available.</p>
+                    <p style={{ color: "#888" }}>No current levels available.</p>
                 )}
             </div>
 
-            <div>
+
+            <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ color: "#555" }}>🔥 Streaks:</h4>
                 {streaks && streaks.length > 0 ? (
-                    <>
-                        <h5 style={{color: "gray"}}>Streaks:</h5>
-                        {streaks.map(({category, successStreak}) => (
-                            <ul key={category}>
-                                <li>
-                                    <strong>Category:</strong> {category}
-                                </li>
-                                <li>
-                                    <strong>Success streaks: </strong> {successStreak}
-                                </li>
-                            </ul>
+                    <ul style={{ marginLeft: "20px" }}>
+                        {streaks.map(({ category, successStreak }) => (
+                            <li key={category}>
+                                <strong>Category:</strong> {category} | <strong>Success Streak:</strong> {successStreak}
+                            </li>
                         ))}
-                    </>
+                    </ul>
                 ) : (
-                    <p>No Streaks available.</p>
+                    <p style={{ color: "#888" }}>No streaks available.</p>
                 )}
             </div>
 
-            <div>
+
+            <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ color: "#555" }}>⚠️ Weak Points:</h4>
                 {weakPoints && weakPoints.length > 0 ? (
-                    <>
-                        <h5 style={{color: "gray"}}>Weak Points:</h5>
-                        {weakPoints.map(({category, errorCount}) => (
-                            <ul key={category}>
-                                <li>
-                                    <strong>Category:</strong> {category}
-                                </li>
-                                <li>
-                                    <strong>Error Count: </strong> {errorCount}
-                                </li>
-                            </ul>
+                    <ul style={{ marginLeft: "20px" }}>
+                        {weakPoints.map(({ category, errorCount }) => (
+                            <li key={category}>
+                                <strong>Category:</strong> {category} | <strong>Error Count:</strong> {errorCount}
+                            </li>
                         ))}
-                    </>
+                    </ul>
                 ) : (
-                    <p>No Weak Points available.</p>
+                    <p style={{ color: "#888" }}>No weak points available.</p>
                 )}
             </div>
 
-            <div>
+
+            <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ color: "#555" }}>✅ Correct Answers Per Category:</h4>
                 {correctAnswersPerCategory && Object.keys(correctAnswersPerCategory).length > 0 ? (
-                    <>
-                        <h5 style={{color: "gray"}}>Correct Answers Per Category:</h5>
-                        <ul>
-                            {Object.entries(correctAnswersPerCategory).map(([category, correctAnswers]) => (
-                                <li key={category}>
-                                    <strong>Category:</strong> {category}, <strong>
-                                    Correct Answers:</strong> {correctAnswers}
-                                </li>
-                            ))}
-                        </ul>
-                    </>
+                    <ul style={{ marginLeft: "20px" }}>
+                        {Object.entries(correctAnswersPerCategory).map(([category, correctAnswers]) => (
+                            <li key={category}>
+                                <strong>Category:</strong> {category} | <strong>Correct Answers:</strong> {correctAnswers}
+                            </li>
+                        ))}
+                    </ul>
                 ) : (
-                    <p>No correct answers available.</p>
+                    <p style={{ color: "#888" }}>No correct answers available.</p>
                 )}
             </div>
 
-            <div>
+
+            <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ color: "#555" }}>❌ Incorrect Answers Per Category:</h4>
                 {incorrectAnswersPerCategory && Object.keys(incorrectAnswersPerCategory).length > 0 ? (
-                    <>
-                        <h5 style={{color: "gray"}}>Incorrect Answers Per Category:</h5>
-                        <ul>
-                            {Object.entries(incorrectAnswersPerCategory).map(([category, incorrectAnswers]) => (
-                                <li key={category}>
-                                    <strong>Category:</strong> {category}, <strong>
-                                    Incorrect Answers:</strong> {incorrectAnswers}
-                                </li>
-                            ))}
-                        </ul>
-                    </>
+                    <ul style={{ marginLeft: "20px" }}>
+                        {Object.entries(incorrectAnswersPerCategory).map(([category, incorrectAnswers]) => (
+                            <li key={category}>
+                                <strong>Category:</strong> {category} | <strong>Incorrect Answers:</strong> {incorrectAnswers}
+                            </li>
+                        ))}
+                    </ul>
                 ) : (
-                    <p>No Incorrect answers available.</p>
+                    <p style={{ color: "#888" }}>No incorrect answers available.</p>
                 )}
             </div>
 
-            <div>
+            <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ color: "#555" }}>📈 Success Rate Per Category:</h4>
                 {successRate && Object.keys(successRate).length > 0 ? (
-                    <>
-                        <h5 style={{color: "gray"}}>Success Rate Per Category:</h5>
-                        <ul>
-                            {Object.entries(successRate).map(([category, success]) => (
-                                <li key={category}>
-                                    <strong>Category: </strong> {category},
-                                    <strong> Success Rate: </strong> {success}
-                                </li>
-                            ))}
-                        </ul>
-                    </>
+                    <ul style={{ marginLeft: "20px" }}>
+                        {Object.entries(successRate).map(([category, success]) => (
+                            <li key={category}>
+                                <strong>Category:</strong> {category} | <strong>Success Rate:</strong> {" "}
+                                {parseFloat(success).toFixed(2)}%
+                            </li>
+                        ))}
+                    </ul>
                 ) : (
-                    <p>No Success rate available.</p>
+                    <p style={{ color: "#888" }}>No success rate data available.</p>
                 )}
             </div>
 
-            <div>
-                <h5 style={{color: "gray"}}>Total:</h5>
-                <ul>
-                    <li>
-                        <strong>Correct answers:</strong> {totalCorrectAnswers}
-                    </li>
 
+            <div style={{ marginBottom: "20px" }}>
+                <h4 style={{ color: "#555" }}>📋 Total Summary:</h4>
+                <ul style={{ marginLeft: "20px" }}>
                     <li>
-                        <strong>Incorrect answers:</strong> {totalIncorrectAnswers}
+                        <strong>Correct Answers:</strong> {totalCorrectAnswers}
                     </li>
                     <li>
-                        <strong>Unanswered Question:</strong> {totalUnansweredQuestion}
+                        <strong>Incorrect Answers:</strong> {totalIncorrectAnswers}
                     </li>
                     <li>
-                        <strong>Success Rate answers:</strong> {totalSuccessRate}
+                        <strong>Unanswered Questions:</strong> {totalUnansweredQuestion}
+                    </li>
+                    <li>
+                        <strong>Overall Success Rate:</strong> {" "}{parseFloat(totalSuccessRate).toFixed(2)}%
                     </li>
                 </ul>
             </div>
