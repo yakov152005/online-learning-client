@@ -14,6 +14,7 @@ const NAV_ERROR = "*";
 const NAV_DEFAULT = "/";
 
 const TIMER_LEVEL_UP = 3000;
+const TIMER_LEVEL_DOWN = 3000;
 const SECOND = 1000;
 const FOR_NEW_QUESTION = 5;
 
@@ -32,6 +33,7 @@ export {
     NAV_ERROR,
     NAV_DEFAULT,
     TIMER_LEVEL_UP,
+    TIMER_LEVEL_DOWN,
     SECOND,
     FOR_NEW_QUESTION,
 }

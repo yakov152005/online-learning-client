@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {
     FOR_NEW_QUESTION,
-    SECOND,
+    SECOND, TIMER_LEVEL_DOWN,
     TIMER_LEVEL_UP,
     URL_GET_QUESTION,
     URL_SERVER_SIDE,
@@ -11,6 +11,8 @@ import {
 import { ReactSketchCanvas } from "react-sketch-canvas";
 import LevelUpAnimation from "../../components/animation/LevelUpAnimation.jsx";
 import "../../css/dashboard/HomeStyle.css"
+import LevelDownAnimation from "../../components/animation/LevelDownAnimation.jsx";
+import StreaksLevelsAnimation from "../../components/animation/StreaksLevelsAnimation.jsx";
 
 
 export default function Home({username}){
@@ -21,6 +23,7 @@ export default function Home({username}){
     const[success, setSuccess] = useState(null);
     const[showExplanation,setShowExplanation] = useState(false);
     const [isLevelUp, setIsLevelUp] = useState(null);
+    const [isLevelDown, setIsLevelDown] = useState(null);
     const [showInvoice, setShowInvoice] = useState(false);
     const [showWordProblem, setShowWordProblem] = useState(false);
     const [showMath, setShowMath] = useState(false);
@@ -94,6 +97,7 @@ export default function Home({username}){
             setSuccess(response.data.success);
             setFeedback(response.data.error);
             setIsLevelUp(response.data.levelUp);
+            setIsLevelDown(response.data.levelDown);
 
             if (!response.data.success) {
                 setShowSolution(true);
@@ -108,6 +112,13 @@ export default function Home({username}){
                 setTimeout(() => {
                     setIsLevelUp(false);
                 }, TIMER_LEVEL_UP);
+            }
+
+            if (response.data.levelDown){
+                setIsLevelDown(true);
+                setTimeout(() => {
+                    setIsLevelDown(false);
+                }, TIMER_LEVEL_DOWN);
             }
 
             setUserAnswer("");
@@ -212,7 +223,17 @@ export default function Home({username}){
                 <div className="loading-overlay">
                     <div className="loading-box">
                         <p>Level Up!
-                            <LevelUpAnimation/>
+                            <StreaksLevelsAnimation/>
+                        </p>
+                    </div>
+                </div>
+            )}
+
+            {isLevelDown && (
+                <div className="loading-overlay">
+                    <div className="loading-box">
+                        <p>Level Down..
+                            <LevelDownAnimation/>
                         </p>
                     </div>
                 </div>
