@@ -24,6 +24,7 @@ export default function Home({username}){
     const[showExplanation,setShowExplanation] = useState(false);
     const [isLevelUp, setIsLevelUp] = useState(null);
     const [isLevelDown, setIsLevelDown] = useState(null);
+    const [successStreaksByCategory, setSuccessStreaksByCategory] = useState({});
     const [showInvoice, setShowInvoice] = useState(false);
     const [showWordProblem, setShowWordProblem] = useState(false);
     const [showMath, setShowMath] = useState(false);
@@ -47,8 +48,13 @@ export default function Home({username}){
             });
 
             setQuestion(response.data.questionDto);
+            setSuccessStreaksByCategory(prevState => ({
+                ...prevState,
+                [selectedCategory]: response.data.successStreak || 0
+            }));
             setSuccess(null);
             setFeedback(null);
+
         }catch (error){
             console.error("Error selecting category: ", error);
         }
@@ -69,6 +75,10 @@ export default function Home({username}){
             });
 
             setQuestion(response.data.questionDto);
+            setSuccessStreaksByCategory(prevState => ({
+                ...prevState,
+                [category]: response.data.successStreak || 0
+            }));
             setFeedback(null);
             setSuccess(null);
             setShowExplanation(false);
@@ -98,6 +108,7 @@ export default function Home({username}){
             setFeedback(response.data.error);
             setIsLevelUp(response.data.levelUp);
             setIsLevelDown(response.data.levelDown);
+            setSuccessStreaksByCategory(response.data.successStreaksByCategory);
 
             if (!response.data.success) {
                 setShowSolution(true);
@@ -200,6 +211,8 @@ export default function Home({username}){
                 return "משוואה ריבועית";
             case "equationOfTheLine":
                 return "משוואת קו הישר";
+            case "derivative":
+                return "נגזרות";
             default:
                 return "";
         }
@@ -208,6 +221,21 @@ export default function Home({username}){
     useEffect(() => {
         setActiveCategoryHb(handleActiveCategory(category));
     }, [category]);
+
+    const streakMessages = [
+        { min: 1, max: 3, message: "💫 Nice 💫️" },
+        { min: 3, max: 5, message: "⚡️ Excellent ⚡️" },
+        { min: 5, max: 7, message: "🔥 On Fire 🔥" },
+        { min: 7, max: 9, message: "☄️ Wow Amazing ☄️" },
+        { min: 9, max: 10, message: "💥🔥 Boom! One More For Level Up 🔥💥" },
+    ];
+
+    const getStreakMessage = (streak) => {
+        const messageObj = streakMessages.find(
+            (range) => streak >= range.min && streak < range.max
+        );
+        return messageObj ? messageObj.message : "";
+    };
 
     const clearCanvas = () => {
         if (canvasRef.current) {
@@ -297,20 +325,35 @@ export default function Home({username}){
                         <button onClick={() => handleCategorySelection("equationOfTheLine")}>
                             משוואת קו ישר
                         </button>
+                        <button onClick={() => handleCategorySelection("derivative")}>
+                            נגזרות
+                        </button>
                     </>
                 )}
             </div>
 
             {category &&
-                <h3 style={{marginTop: "15px"}}><mark style={{borderRadius: "15px"}}>Active Category:</mark>
+                <h3 style={{marginTop: "15px"}}>
+                    <mark style={{borderRadius: "15px"}}>Active Category:</mark>
                     {activeCategoryHb}
                 </h3>
             }
+
+            {category && (
+                <h3 style={{marginTop: "35px"}}>
+                    <mark style={{borderRadius: "15px"}}>Streaks 🔥: </mark>
+                    {successStreaksByCategory[category] || 0}
+                    <div style={{color: successStreaksByCategory[category] > 4 ? "red" : "green", marginTop: "10px"}}>
+                        {getStreakMessage(successStreaksByCategory[category] || 0)}
+                    </div>
+                </h3>
+            )}
+
             <div className="question-section">
-            {question && (
-                <>
-                    <h2 style={{marginTop: "15px"}}>
-                        <mark style={{borderRadius: "15px"}}>Question:</mark>
+                {question && (
+                    <>
+                        <h2 style={{marginTop: "15px"}}>
+                            <mark style={{borderRadius: "15px"}}>Question:</mark>
                         {question.content.split('*').map((part, index) => (
                             <React.Fragment key={index}>
                                 {part}

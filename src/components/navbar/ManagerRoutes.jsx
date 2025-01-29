@@ -3,7 +3,15 @@ import Home from "../../pages/dashboard/Home.jsx";
 import NavBar from "./NavBar.jsx";
 import Register from "../../pages/home/Register.jsx";
 import Login from "../../pages/home/Login.jsx";
-import {NAV_DASHBOARD, NAV_DEFAULT, NAV_ERROR, NAV_HOME, NAV_LOGIN, NAV_REGISTER} from "../../utils/Constants.js";
+import {
+    NAV_DASHBOARD,
+    NAV_DEFAULT,
+    NAV_ERROR,
+    NAV_HOME,
+    NAV_LOGIN,
+    NAV_REGISTER,
+    SECOND
+} from "../../utils/Constants.js";
 import "../../css/home/LoadingStyle.css"
 import Cookies from "universal-cookie";
 import {useEffect, useState} from "react";
@@ -53,7 +61,7 @@ export default function ManagerRoutes() {
 
         if (protectedRoutes.includes(location.pathname)) {
             setLoading(true);
-            const timer = setTimeout(() => setLoading(false), 1500);
+            const timer = setTimeout(() => setLoading(false), SECOND * 2);
             return () => clearTimeout(timer);
         }
     }, [location]);
