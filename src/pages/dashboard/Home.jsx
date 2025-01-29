@@ -9,10 +9,11 @@ import {
     URL_SUBMIT_ANSWER
 } from "../../utils/Constants.js";
 import { ReactSketchCanvas } from "react-sketch-canvas";
-import LevelUpAnimation from "../../components/animation/LevelUpAnimation.jsx";
 import "../../css/dashboard/HomeStyle.css"
 import LevelDownAnimation from "../../components/animation/LevelDownAnimation.jsx";
 import StreaksLevelsAnimation from "../../components/animation/StreaksLevelsAnimation.jsx";
+import {Tabs, Tab, Card, Typography, CardContent} from "@mui/material";
+import CategoryInfoCard from "../../components/dashboard/CategoryInfoCard.jsx";
 
 
 export default function Home({username}){
@@ -25,9 +26,7 @@ export default function Home({username}){
     const [isLevelUp, setIsLevelUp] = useState(null);
     const [isLevelDown, setIsLevelDown] = useState(null);
     const [successStreaksByCategory, setSuccessStreaksByCategory] = useState({});
-    const [showInvoice, setShowInvoice] = useState(false);
-    const [showWordProblem, setShowWordProblem] = useState(false);
-    const [showMath, setShowMath] = useState(false);
+    const [selectedTopic, setSelectedTopic] = useState(null);
     const canvasRef = useRef();
     const [timer, setTimer] = useState(null);
     const [isCountdownActive, setIsCountdownActive] = useState(false);
@@ -98,7 +97,7 @@ export default function Home({username}){
             const response = await axios.post(URL_SERVER_SIDE + URL_SUBMIT_ANSWER, null, {
                 params: {
                     questionId: question.id,
-                    userAnswer: String(userAnswer),
+                    userAnswer: String(userAnswer).trim(),
                     username: username,
                 },
             });
@@ -134,10 +133,9 @@ export default function Home({username}){
 
             setUserAnswer("");
             setQuestion("");
+            startCountdown();
         } catch (error) {
             console.error("Error submitting answer:", error);
-        }finally {
-            startCountdown();
         }
     };
 
@@ -167,31 +165,6 @@ export default function Home({username}){
         }
     };
 
-
-    const handleShowTopic = (topic) => {
-        setCategory("");
-        setUserAnswer("");
-        setQuestion("");
-        switch (topic){
-            case "invoice":
-                setShowInvoice(true);
-                setShowWordProblem(false);
-                setShowMath(false);
-                break;
-            case "wordProblem":
-                setShowWordProblem(true);
-                setShowInvoice(false);
-                setShowMath(false);
-                break;
-            case "math":
-                setShowMath(true);
-                setShowWordProblem(false);
-                setShowInvoice(false);
-                break;
-            default:
-                return;
-        }
-    }
 
     const handleActiveCategory = (category) => {
         switch (category) {
@@ -237,6 +210,24 @@ export default function Home({username}){
         return messageObj ? messageObj.message : "";
     };
 
+    const subtopics = {
+        invoice: [
+            { name: "חיבור", icon: "➕", value: "addition" },
+            { name: "חיסור", icon: "➖", value: "subtraction" },
+            { name: "כפל", icon: "✖️", value: "multiplication" },
+            { name: "חילוק", icon: "➗", value: "division" }
+        ],
+        math: [
+            { name: "סדרה חשבונית", icon: "🔢", value: "invoiceSeries" },
+            { name: "משוואה ריבועית", icon: "📐", value: "quadraticEquation" },
+            { name: "משוואת קו ישר", icon: "📏", value: "equationOfTheLine" },
+            { name: "נגזרות", icon: "∂", value: "derivative" }
+        ],
+        wordProblem:[
+            { name: "בעיות מילוליות", icon: "📖", value: "wordProblem" },
+        ]
+    };
+
     const clearCanvas = () => {
         if (canvasRef.current) {
             canvasRef.current.clearCanvas();
@@ -246,7 +237,12 @@ export default function Home({username}){
     };
 
     return (
-        <div className="home-container">
+        <div  style={{ display: "flex", alignItems: "flex-start"}}>
+            <div className="sidebar">
+                <CategoryInfoCard activeCategory={activeCategoryHb}/>
+            </div>
+
+
             {isLevelUp && (
                 <div className="loading-overlay">
                     <div className="loading-box">
@@ -267,213 +263,200 @@ export default function Home({username}){
                 </div>
             )}
 
-            <h1 className="title">Online Learning</h1>
-            <div className="category-selection">
-                <h2 style={{marginTop: "15px"}}>
-                    <mark style={{borderRadius: "15px"}}>Select Topic:</mark>
-                </h2>
 
-                <button onClick={() => (handleShowTopic("invoice"))}>חשבון</button>
-                <button onClick={() => (handleShowTopic("wordProblem"))}>שאלות מילוליות</button>
-                <button onClick={() => (handleShowTopic("math"))}>מתמטיקה</button>
-
-
-                {showInvoice && (
-                    <>
-                        <h2 style={{marginTop: "15px"}}>
-                            <mark style={{borderRadius: "15px"}}>Select Category:</mark>
-                        </h2>
-                        <button onClick={() => handleCategorySelection("addition")}>
-                            חיבור
-                        </button>
-                        <button onClick={() => handleCategorySelection("subtraction")}>
-                            חיסור
-                        </button>
-                        <button onClick={() => handleCategorySelection("multiplication")}>
-                            כפל
-                        </button>
-                        <button onClick={() => handleCategorySelection("division")}>
-                            חילוק
-                        </button>
-                    </>
-                )}
-
-                {showWordProblem && (
-                    <>
-
-                        <h2 style={{marginTop: "15px"}}>
-                            <mark style={{borderRadius: "15px"}}>Select Category:</mark>
-                        </h2>
-                        <button onClick={() => handleCategorySelection("wordProblem")}>
-                            בעיות מילוליות
-                        </button>
-                    </>
-                )}
-
-
-                {showMath && (
-                    <>
-                        <h2 style={{marginTop: "15px"}}>
-                            <mark style={{borderRadius: "15px"}}>Select Category:</mark>
-                        </h2>
-                        <button onClick={() => handleCategorySelection("invoiceSeries")}>
-                            סדרה חשבונית
-                        </button>
-                        <button onClick={() => handleCategorySelection("quadraticEquation")}>
-                            משוואה ריבועית
-                        </button>
-                        <button onClick={() => handleCategorySelection("equationOfTheLine")}>
-                            משוואת קו ישר
-                        </button>
-                        <button onClick={() => handleCategorySelection("derivative")}>
-                            נגזרות
-                        </button>
-                    </>
-                )}
-            </div>
-
-            {category &&
-                <h3 style={{marginTop: "15px"}}>
-                    <mark style={{borderRadius: "15px"}}>Active Category:</mark>
-                    {activeCategoryHb}
-                </h3>
-            }
-
-            {category && (
-                <h3 style={{marginTop: "35px"}}>
-                    <mark style={{borderRadius: "15px"}}>Streaks 🔥: </mark>
-                    {successStreaksByCategory[category] || 0}
-                    <div style={{color: successStreaksByCategory[category] > 4 ? "red" : "green", marginTop: "10px"}}>
-                        {getStreakMessage(successStreaksByCategory[category] || 0)}
-                    </div>
-                </h3>
-            )}
-
-            <div className="question-section">
-                {question && (
-                    <>
-                        <h2 style={{marginTop: "15px"}}>
-                            <mark style={{borderRadius: "15px"}}>Question:</mark>
-                        {question.content.split('*').map((part, index) => (
-                            <React.Fragment key={index}>
-                                {part}
-                                {index < question.content.split('*').length - 1 && <br/>}
-                            </React.Fragment>
-                        ))}
+            <div className="home-container">
+                <h1 className="title">Online Learning</h1>
+                <div className="category-selection">
+                    <h2 style={{marginTop: "15px"}}>
+                        <mark style={{borderRadius: "15px"}}>Select Topic:</mark>
                     </h2>
-                    <input
-                        type="text"
-                        value={userAnswer}
-                        onChange={(e) => setUserAnswer(e.target.value)}
-                        placeholder="Enter your answer"
-                        className="answer-input"
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" && !e.shiftKey) {
-                                e.preventDefault();
-                                if (userAnswer.trim()) {
-                                    handleSubmitAnswer();
-                                }
+
+                    <Tabs
+                        value={selectedTopic}
+                        onChange={(event, newValue) => setSelectedTopic(newValue)}
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        textColor="white"
+                        sx={{
+                            "& .Mui-selected": {
+                                color: "yellow",
+                                fontWeight: "bold"
                             }
                         }}
-                    />
-                    <button
-                        className={!userAnswer.trim() ? "submit-button-disabled" : "submit-button"}
-                        onClick={handleSubmitAnswer}
-                        disabled={!userAnswer.trim()}
                     >
-                        Submit Answer
-                    </button>
-                    {showCanvas ? (
+                        <Tab label="🧮 חשבון" value="invoice"/>
+                        <Tab label="📖 בעיות מילוליות" value="wordProblem"/>
+                        <Tab label="📐 מתמטיקה" value="math"/>
+                    </Tabs>
+
+
+                    <div style={{display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "15px"}}>
+                        {subtopics[selectedTopic]?.map((sub) => (
+                            <Card
+                                key={sub.value}
+                                onClick={() => handleCategorySelection(sub.value)}
+                                style={{
+                                    width: "150px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    backgroundColor: category === sub.value ? "yellow" : "#FFF",
+                                    transition: "0.3s",
+                                    borderRadius: "10px",
+                                    padding: "10px"
+                                }}
+                            >
+                                <CardContent>
+                                    <Typography variant="h5">{sub.icon}</Typography>
+                                    <Typography variant="subtitle1">{sub.name}</Typography>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </div>
+
+                {category &&
+                    <h3 style={{marginTop: "15px"}}>
+                        <mark style={{borderRadius: "15px"}}>Active Category:</mark>
+                        {activeCategoryHb}
+                    </h3>
+                }
+
+                {category && (
+                    <h3 style={{marginTop: "35px"}}>
+                        <mark style={{borderRadius: "15px"}}>Streaks 🔥:</mark>
+                        {successStreaksByCategory[category] || 0}
+                        <div style={{color: successStreaksByCategory[category] > 4 ? "red" : "green", marginTop: "10px"}}>
+                            {getStreakMessage(successStreaksByCategory[category] || 0)}
+                        </div>
+                    </h3>
+                )}
+
+                <div className="question-section">
+                    {question && (
                         <>
-                            <div className="sketch-container">
-                                <ReactSketchCanvas
-                                    ref={canvasRef}
-                                    strokeWidth={3}
-                                    strokeColor="black"
-                                    allowOnlyPointerType="all"
-                                />
-                            </div>
-                            <button className="clear-button" onClick={clearCanvas}>
-                                Clear Canvas
-                            </button>
-                            <button className="clear-button" onClick={() => {
-                                setShowCanvas(false)
-                            }}>
-                                Hide Canvas
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <button className="clear-button" onClick={() => {
-                                setShowCanvas(true)
-                            }}>
-                                Show Canvas
-                            </button>
-                        </>
-                    )
-
-                    }
-
-                    <br/>
-
-                    {!showExplanation && <button
-                        className={"btn - btn-outline-info"}
-                        onClick={() => setShowExplanation(true)}>
-                        Show Explanation
-                    </button>
-                    }
-
-                    {showExplanation && (
-                        <>
-                            <button onClick={() => setShowExplanation(false)}
-                                    className={"btn - btn-outline-info"}
-                            >Hide Explanation
-                            </button>
-                            <div className="explanation">
-                                {question.explanation.split('*').map((part, index) => (
+                            <h2 style={{marginTop: "15px"}}>
+                                <mark style={{borderRadius: "15px"}}>Question:</mark>
+                                {question.content.split('*').map((part, index) => (
                                     <React.Fragment key={index}>
                                         {part}
-                                        {index < question.explanation.split('*').length - 1 && <br/>}
+                                        {index < question.content.split('*').length - 1 && <br/>}
                                     </React.Fragment>
                                 ))}
-                            </div>
+                            </h2>
+                            <input
+                                type="text"
+                                value={userAnswer}
+                                onChange={(e) => setUserAnswer(e.target.value)}
+                                placeholder="Enter your answer"
+                                className="answer-input"
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && !e.shiftKey) {
+                                        e.preventDefault();
+                                        if (userAnswer.trim()) {
+                                            handleSubmitAnswer();
+                                        }
+                                    }
+                                }}
+                            />
+                            <button
+                                className={!userAnswer.trim() ? "submit-button-disabled" : "submit-button"}
+                                onClick={handleSubmitAnswer}
+                                disabled={!userAnswer.trim()}
+                            >
+                                Submit Answer
+                            </button>
+                            {showCanvas ? (
+                                <>
+                                    <div className="sketch-container">
+                                        <ReactSketchCanvas
+                                            ref={canvasRef}
+                                            strokeWidth={3}
+                                            strokeColor="black"
+                                            allowOnlyPointerType="all"
+                                        />
+                                    </div>
+                                    <button className="clear-button" onClick={clearCanvas}>
+                                        Clear Canvas
+                                    </button>
+                                    <button className="clear-button" onClick={() => {
+                                        setShowCanvas(false)
+                                    }}>
+                                        Hide Canvas
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <button className="clear-button" onClick={() => {
+                                        setShowCanvas(true)
+                                    }}>
+                                        Show Canvas
+                                    </button>
+                                </>
+                            )
+
+                            }
+
+                            <br/>
+
+                            {!showExplanation && <button
+                                className={"btn - btn-outline-info"}
+                                onClick={() => setShowExplanation(true)}>
+                                Show Explanation
+                            </button>
+                            }
+
+                            {showExplanation && (
+                                <>
+                                    <button onClick={() => setShowExplanation(false)}
+                                            className={"btn - btn-outline-info"}
+                                    >Hide Explanation
+                                    </button>
+                                    <div className="explanation">
+                                        {question.explanation.split('*').map((part, index) => (
+                                            <React.Fragment key={index}>
+                                                {part}
+                                                {index < question.explanation.split('*').length - 1 && <br/>}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
                         </>
                     )}
-                </>
-            )}
 
-                {(category && !isCountdownActive) && (
-                    <button
-                        className={"btn - btn-outline-info"}
-                        onClick={handleNewQuestion}>
-                        Get New Question
-                    </button>
-                )}
-
-                {isCountdownActive && (
-                    <div>
-                    <p>Next question in: {timer} seconds</p>
+                    {(category && !isCountdownActive) && (
                         <button
-                            className={"btn - btn-outline-danger"}
-                            onClick={stopCountdown}>
-                            Stop Question
+                            className={"btn - btn-outline-info"}
+                            onClick={handleNewQuestion}>
+                            Get New Question
                         </button>
+                    )}
+
+                    {isCountdownActive && (
+                        <div>
+                            <p>Next question in: {timer} seconds</p>
+                            <button
+                                className={"btn - btn-outline-danger"}
+                                onClick={stopCountdown}>
+                                Stop Question
+                            </button>
+                        </div>
+                    )}
+
+                </div>
+
+                {feedback &&
+                    <div className={`feedback ${success ? "success" : "error"}`}>{
+                        feedback}
+                    </div>
+                }
+                {feedback && showSolution && (
+                    <div className="solution">
+                        <h3>The Solution is:</h3>
+                        <p>{solution}</p>
                     </div>
                 )}
-
             </div>
-
-            {feedback &&
-                <div className={`feedback ${success ? "success" : "error"}`}>{
-                    feedback}
-                </div>
-            }
-            {feedback && showSolution && (
-                <div className="solution">
-                    <h3>The Solution is:</h3>
-                    <p>{solution}</p>
-                </div>
-            )}
         </div>
     );
 }

@@ -10,13 +10,24 @@
 .home-container {
     font-family: 'Fredoka One', cursive;
     padding: 20px;
-    margin: 0 auto;
+    margin-left: 380px;
     max-width: 1200px;
     height: 100%;
     min-height: 140vh;
     background-color: #f9f9f9;
     border-radius: 10px;
-{/*background-color: rgba(255, 255, 255, 0.9); */}
+    flex-grow: 1;
+}
+
+.sidebar {
+    width: 300px;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+}
+
+.category-selection{
+    font-family: 'Fredoka One', cursive;
 }
 
 .title {
