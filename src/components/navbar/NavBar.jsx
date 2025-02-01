@@ -1,9 +1,9 @@
 import {NavLink} from "react-router-dom";
-import {NAV_DASHBOARD, NAV_HOME, NAV_LOGIN, NAV_REGISTER} from "../../utils/Constants.js";
+import {NAV_DASHBOARD, NAV_EXPLANATION, NAV_HOME, NAV_LOGIN, NAV_REGISTER} from "../../utils/Constants.js";
 import "../../css/navbar/NavBarStyle.css";
 import BookAnimation from "../animation/BookAnimation.jsx";
 import {Tooltip} from "@mui/material";
-import {IconLogin2, IconUserCircle, IconHome,IconChartBarPopular,IconLogout } from "@tabler/icons-react";
+import {IconLogin2, IconUserCircle, IconHome,IconChartBarPopular,IconLogout,IconBook  } from "@tabler/icons-react";
 
 // eslint-disable-next-line react/prop-types
 export default function NavBar({isLoggedIn, onLogout, username}) {
@@ -87,6 +87,24 @@ export default function NavBar({isLoggedIn, onLogout, username}) {
                                         <IconChartBarPopular stroke={2} size={20}
                                                              style={{
                                                                  marginLeft: "22px",
+                                                                 marginTop: "-4px",
+                                                                 marginBottom: "2px"
+                                                             }}/>
+                                    </NavLink>
+                                </li>
+                            </Tooltip>
+                            <Tooltip title="Explanation">
+                                <li>
+                                    <NavLink
+                                        to={NAV_EXPLANATION}
+                                        className={({isActive}) =>
+                                            isActive ? "nav-link active" : "nav-link"
+                                        }
+                                    >
+                                        <strong> Explanation</strong><br/>&nbsp;
+                                        <IconBook stroke={2} size={20}
+                                                             style={{
+                                                                 marginLeft: "32px",
                                                                  marginTop: "-4px",
                                                                  marginBottom: "2px"
                                                              }}/>

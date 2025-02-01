@@ -3,7 +3,7 @@ import axios from "axios";
 import {
     FOR_NEW_QUESTION,
     SECOND, TIMER_LEVEL_DOWN,
-    TIMER_LEVEL_UP,
+    TIMER_LEVEL_UP, URL_GET_COINS_USER,
     URL_GET_QUESTION,
     URL_SERVER_SIDE,
     URL_SUBMIT_ANSWER
@@ -26,6 +26,7 @@ export default function Home({username}){
     const [isLevelUp, setIsLevelUp] = useState(null);
     const [isLevelDown, setIsLevelDown] = useState(null);
     const [successStreaksByCategory, setSuccessStreaksByCategory] = useState({});
+    const [coinsCredits, setCoinsCredits] = useState(null);
     const [selectedTopic, setSelectedTopic] = useState(null);
     const canvasRef = useRef();
     const [timer, setTimer] = useState(null);
@@ -37,6 +38,23 @@ export default function Home({username}){
     const [activeCategoryHb, setActiveCategoryHb] = useState("");
 
 
+    useEffect(() => {
+        const fetchUserCoins = async () => {
+            try {
+                const response = await axios.get(URL_SERVER_SIDE + URL_GET_COINS_USER, {
+                    params: {username: username}
+                });
+                if (response.data.success){
+                    setCoinsCredits(response.data.coinsCredits);
+                }else {
+                    console.log(response.data.error);
+                }
+            } catch (error) {
+                console.error("Error fetching user coins:", error);
+            }
+        };
+        fetchUserCoins();
+    }, [username]);
 
 
     const handleCategorySelection = async (selectedCategory) =>{
@@ -108,6 +126,7 @@ export default function Home({username}){
             setIsLevelUp(response.data.levelUp);
             setIsLevelDown(response.data.levelDown);
             setSuccessStreaksByCategory(response.data.successStreaksByCategory);
+            setCoinsCredits(response.data.coins);
 
             if (!response.data.success) {
                 setShowSolution(true);
@@ -272,7 +291,7 @@ export default function Home({username}){
                     </h2>
 
                     <Tabs
-                        value={selectedTopic}
+                        value={selectedTopic || false}
                         onChange={(event, newValue) => setSelectedTopic(newValue)}
                         variant="scrollable"
                         scrollButtons="auto"
@@ -328,6 +347,12 @@ export default function Home({username}){
                         <div style={{color: successStreaksByCategory[category] > 4 ? "red" : "green", marginTop: "10px"}}>
                             {getStreakMessage(successStreaksByCategory[category] || 0)}
                         </div>
+                    </h3>
+                )}
+                {category && (
+                    <h3 style={{marginTop: "35px"}}>
+                        <mark style={{borderRadius: "15px"}}>Coins 🪙:</mark>
+                        {coinsCredits}
                     </h3>
                 )}
 

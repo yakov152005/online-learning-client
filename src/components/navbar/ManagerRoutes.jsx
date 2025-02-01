@@ -6,7 +6,7 @@ import Login from "../../pages/home/Login.jsx";
 import {
     NAV_DASHBOARD,
     NAV_DEFAULT,
-    NAV_ERROR,
+    NAV_ERROR, NAV_EXPLANATION,
     NAV_HOME,
     NAV_LOGIN,
     NAV_REGISTER,
@@ -20,6 +20,7 @@ import NotFoundPage from "../../pages/home/NotFoundPage.jsx";
 import ScrollToTop from "../../utils/ScrollToTop.js";
 import ManagerDashboard from "../../pages/dashboard/ManagerDashboard.jsx";
 import LoadingLineAnimation from "../animation/LoadingLineAnimation.jsx";
+import ExplanationPage from "../../pages/dashboard/ExplanationPage.jsx";
 
 export default function ManagerRoutes() {
     const cookies = new Cookies();
@@ -36,28 +37,23 @@ export default function ManagerRoutes() {
             await api.validateTokenApi(token,navigate,cookies,setUsername);
         }catch (error){
             console.log("Error to fetching token",error);
+            cookies.remove("token", { path: "/" });
+            navigate(NAV_LOGIN);
         }
     }
 
     useEffect(() => {
-        if (token) {
+        if (!token  && location.pathname !== NAV_LOGIN && location.pathname !== NAV_REGISTER) {
+            navigate(NAV_LOGIN);
+        } else if (token) {
             fetchToken();
-            console.log("home page token check", token);
-            console.log("Username passed to manger:", username);
         }
-    }, [token, navigate, cookies,username]);
+    }, [token, navigate, location.pathname]);
 
-    /*
-    useEffect(() => {
-        setLoading(true);
-        const timer = setTimeout(() => setLoading(false), 3000);
 
-        return () => clearTimeout(timer);
-    }, [location]);
-     */
 
     useEffect(() => {
-        const protectedRoutes = [NAV_HOME, NAV_DASHBOARD, NAV_ERROR];
+        const protectedRoutes = [NAV_HOME, NAV_DASHBOARD,NAV_EXPLANATION, NAV_ERROR];
 
         if (protectedRoutes.includes(location.pathname)) {
             setLoading(true);
@@ -98,6 +94,7 @@ export default function ManagerRoutes() {
                             <>
                                 <Route path={NAV_HOME} element={<Home username={username}/>}/>
                                 <Route path={NAV_DASHBOARD} element={<ManagerDashboard username={username} />} />
+                                <Route path={NAV_EXPLANATION} element={<ExplanationPage/>}/>
                                 <Route path={NAV_ERROR} element={<NotFoundPage/>}/>
                             </>
                         )}

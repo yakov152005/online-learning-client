@@ -1,0 +1,15 @@
+.explanation-container {
+    font-family: "Fredoka One", cursive;
+    padding: 20px;
+    background-image: url('/src/assets/images/notebook-grid.png');
+    background-size: contain;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #333;
+}
