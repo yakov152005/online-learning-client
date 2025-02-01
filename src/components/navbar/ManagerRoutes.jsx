@@ -4,12 +4,14 @@ import NavBar from "./NavBar.jsx";
 import Register from "../../pages/home/Register.jsx";
 import Login from "../../pages/home/Login.jsx";
 import {
+    NAV_CHANGE_PASSWORD,
+    NAV_CONFIRM_RESET,
     NAV_DASHBOARD,
     NAV_DEFAULT,
-    NAV_ERROR, NAV_EXPLANATION,
+    NAV_ERROR, NAV_EXPLANATION, NAV_FORGET_PASSWORD,
     NAV_HOME,
     NAV_LOGIN,
-    NAV_REGISTER,
+    NAV_REGISTER, NAV_SETTINGS,
     SECOND
 } from "../../utils/Constants.js";
 import "../../css/home/LoadingStyle.css"
@@ -21,6 +23,10 @@ import ScrollToTop from "../../utils/ScrollToTop.js";
 import ManagerDashboard from "../../pages/dashboard/ManagerDashboard.jsx";
 import LoadingLineAnimation from "../animation/LoadingLineAnimation.jsx";
 import ExplanationPage from "../../pages/dashboard/ExplanationPage.jsx";
+import SettingsPage from "../../pages/settings/SettingsPage.jsx";
+import ForgetPassword from "../../pages/home/ForgetPassword.jsx";
+import ConfirmResetPasswordPage from "../../pages/home/ConfirmResetPasswordPage.jsx";
+import ChangePassword from "../../pages/settings/ChangePassword.jsx";
 
 export default function ManagerRoutes() {
     const cookies = new Cookies();
@@ -43,7 +49,9 @@ export default function ManagerRoutes() {
     }
 
     useEffect(() => {
-        if (!token  && location.pathname !== NAV_LOGIN && location.pathname !== NAV_REGISTER) {
+        if (!token  &&
+            location.pathname !== NAV_LOGIN && location.pathname !== NAV_REGISTER
+            && location.pathname !== NAV_FORGET_PASSWORD  && location.pathname !== NAV_CONFIRM_RESET) {
             navigate(NAV_LOGIN);
         } else if (token) {
             fetchToken();
@@ -86,6 +94,8 @@ export default function ManagerRoutes() {
                                 <Route path={NAV_DEFAULT} element={<Navigate to={NAV_LOGIN}/>}/>
                                 <Route path={NAV_REGISTER} element={<Register/>}/>
                                 <Route path={NAV_LOGIN} element={<Login onLogin={() => navigate(NAV_HOME)}/>}/>
+                                <Route path={NAV_FORGET_PASSWORD} element={<ForgetPassword/>}/>
+                                <Route path={NAV_CONFIRM_RESET} element={<ConfirmResetPasswordPage/>}/>
                                 <Route path={NAV_ERROR} element={<NotFoundPage/>}/>
 
                             </>
@@ -95,6 +105,8 @@ export default function ManagerRoutes() {
                                 <Route path={NAV_HOME} element={<Home username={username}/>}/>
                                 <Route path={NAV_DASHBOARD} element={<ManagerDashboard username={username} />} />
                                 <Route path={NAV_EXPLANATION} element={<ExplanationPage/>}/>
+                                <Route path={NAV_SETTINGS} element={<SettingsPage/>} />
+                                <Route path={NAV_CHANGE_PASSWORD} element={<ChangePassword/>}/>
                                 <Route path={NAV_ERROR} element={<NotFoundPage/>}/>
                             </>
                         )}

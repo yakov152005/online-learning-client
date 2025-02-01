@@ -1,7 +1,14 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import axios from "axios";
-import {NAV_HOME, NAV_LOGIN, NAV_REGISTER, URL_LOGIN, URL_SERVER_SIDE} from "../../utils/Constants.js";
+import {
+    NAV_FORGET_PASSWORD,
+    NAV_HOME,
+    NAV_LOGIN,
+    NAV_REGISTER,
+    URL_LOGIN,
+    URL_SERVER_SIDE
+} from "../../utils/Constants.js";
 import {IconButton, InputAdornment, TextField, Tooltip} from "@mui/material";
 import "../../css/home/SignInAndUp.css"
 import Cookies from "universal-cookie";
@@ -126,7 +133,7 @@ export default function Login() {
                                             <IconButton onClick={handleShowPassword} edge="end">
                                                 {
                                                     formData.password.length > 0 && (
-                                                        showPassword ? <Visibility /> : <VisibilityOff />
+                                                        showPassword ? <Visibility/> : <VisibilityOff/>
                                                     )
                                                 }
                                             </IconButton>
@@ -134,6 +141,21 @@ export default function Login() {
                                     ),
                                 }}
                             />
+
+                            <div>
+                                <a onClick={() => navigate(NAV_FORGET_PASSWORD)}
+                                   className="icon-link"
+                                   style={{
+                                       cursor: "pointer",
+                                       textDecoration: "underline",
+                                       color: "blue",
+                                       display: "inline-flex",
+                                       alignItems: "center",
+                                       marginLeft: "190px"
+                                   }}>
+                                    forgot password?
+                                </a>
+                            </div>
 
                             <button
                                 className="btn-sign"
@@ -180,7 +202,8 @@ export default function Login() {
 
                     <div className="right-section">
                         <LoginAnimation/>
-                        <p className="site-info" style={{color: "black", fontFamily: 'Brush Script MT',fontSize:"25px"}}>
+                        <p className="site-info"
+                           style={{color: "black", fontFamily: 'Brush Script MT', fontSize: "25px"}}>
                             Welcome back! Log in and solve exercises.
                         </p>
                     </div>

@@ -173,7 +173,7 @@ export default function ChartsDashboardView({
                 <div style={{padding: "10px", columns: "3"}}>
 
                     <div>
-                        <Grid2 item xs={12} sm={6} md={4}>
+                        <Grid2 xs={12} sm={6} md={4}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" color={"gray"} gutterBottom>
@@ -195,7 +195,7 @@ export default function ChartsDashboardView({
                     </div>
 
                     <div style={{marginTop: "30px"}}>
-                        <Grid2 item xs={12} sm={6} md={4}>
+                        <Grid2  xs={12} sm={6} md={4}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" color={"gray"} gutterBottom>
@@ -217,7 +217,7 @@ export default function ChartsDashboardView({
                     </div>
 
                     <div style={{marginTop: "30px"}}>
-                        <Grid2 item xs={12} sm={6} md={4}>
+                        <Grid2 xs={12} sm={6} md={4}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" color={"gray"} gutterBottom>
@@ -238,7 +238,7 @@ export default function ChartsDashboardView({
                     </div>
 
                     <div style={{marginTop: "30px"}}>
-                        <Grid2 item xs={12} sm={6} md={4}>
+                        <Grid2 xs={12} sm={6} md={4}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" color={"gray"} gutterBottom>
@@ -264,7 +264,7 @@ export default function ChartsDashboardView({
                 </div>
 
                 <div style={{marginLeft: "10px", marginTop: "-10px"}}>
-                    <Grid2 item xs={12} sm={6} md={4}>
+                    <Grid2  xs={12} sm={6} md={4}>
                         <Card>
                             <CardContent>
                                 <Typography variant="h6" color={"gray"} gutterBottom>
@@ -283,7 +283,7 @@ export default function ChartsDashboardView({
 
 
                 <div style={{marginLeft: "-10px", marginTop: "-10px"}}>
-                    <Grid2 item xs={12} sm={6} md={4}>
+                    <Grid2 xs={12} sm={6} md={4}>
                         <Card>
                             <CardContent>
                                 <Typography variant="h6" color={"gray"} gutterBottom>

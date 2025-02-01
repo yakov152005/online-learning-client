@@ -84,7 +84,7 @@ export default function CategoryInfoCard({ activeCategory }) {
                         color:"blue"
                     }}
                 >
-                    <strong>{activeCategory || "בחר קטגוריה"}</strong>
+                    <strong>{ "ℹ️ " + activeCategory  || "בחר קטגוריה"}</strong>
                 </Typography>
 
                 <Typography

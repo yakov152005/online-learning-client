@@ -1,9 +1,16 @@
 import {NavLink} from "react-router-dom";
-import {NAV_DASHBOARD, NAV_EXPLANATION, NAV_HOME, NAV_LOGIN, NAV_REGISTER} from "../../utils/Constants.js";
+import {
+    NAV_DASHBOARD,
+    NAV_EXPLANATION,
+    NAV_HOME,
+    NAV_LOGIN,
+    NAV_REGISTER,
+    NAV_SETTINGS
+} from "../../utils/Constants.js";
 import "../../css/navbar/NavBarStyle.css";
 import BookAnimation from "../animation/BookAnimation.jsx";
 import {Tooltip} from "@mui/material";
-import {IconLogin2, IconUserCircle, IconHome,IconChartBarPopular,IconLogout,IconBook  } from "@tabler/icons-react";
+import {IconLogin2, IconUserCircle, IconHome,IconChartBarPopular,IconLogout,IconBook,IconSettings  } from "@tabler/icons-react";
 
 // eslint-disable-next-line react/prop-types
 export default function NavBar({isLoggedIn, onLogout, username}) {
@@ -108,6 +115,27 @@ export default function NavBar({isLoggedIn, onLogout, username}) {
                                                                  marginTop: "-4px",
                                                                  marginBottom: "2px"
                                                              }}/>
+                                    </NavLink>
+                                </li>
+                            </Tooltip>
+                            <Tooltip title="Settings">
+                                <li>
+                                    <NavLink
+                                        to={NAV_SETTINGS}
+                                        className={({isActive}) =>
+                                            isActive ? "nav-link active" : "nav-link"
+                                        }
+                                    >
+                                        <strong> Settings</strong><br/>&nbsp;
+                                        <IconSettings
+                                            stroke={2}
+                                            size={20}
+                                            style={{
+                                                marginLeft: "18px",
+                                                marginTop: "-4px",
+                                                marginBottom: "2px"
+                                            }}
+                                        />
                                     </NavLink>
                                 </li>
                             </Tooltip>

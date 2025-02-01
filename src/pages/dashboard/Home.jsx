@@ -14,18 +14,20 @@ import LevelDownAnimation from "../../components/animation/LevelDownAnimation.js
 import StreaksLevelsAnimation from "../../components/animation/StreaksLevelsAnimation.jsx";
 import {Tabs, Tab, Card, Typography, CardContent} from "@mui/material";
 import CategoryInfoCard from "../../components/dashboard/CategoryInfoCard.jsx";
+import UserInfoCard from "../../components/dashboard/UserInfoCard.jsx";
 
 
 export default function Home({username}){
-    const[category, setCategory] = useState(null);
-    const[question, setQuestion] = useState(null);
-    const[userAnswer, setUserAnswer] = useState("");
-    const[feedback, setFeedback] = useState(null);
-    const[success, setSuccess] = useState(null);
-    const[showExplanation,setShowExplanation] = useState(false);
+    const [category, setCategory] = useState(null);
+    const [question, setQuestion] = useState(null);
+    const [userAnswer, setUserAnswer] = useState("");
+    const [feedback, setFeedback] = useState(null);
+    const [success, setSuccess] = useState(null);
+    const [showExplanation,setShowExplanation] = useState(false);
     const [isLevelUp, setIsLevelUp] = useState(null);
     const [isLevelDown, setIsLevelDown] = useState(null);
     const [successStreaksByCategory, setSuccessStreaksByCategory] = useState({});
+    const [currentLevelByCategory, setCurrentLevelByCategory] = useState({});
     const [coinsCredits, setCoinsCredits] = useState(null);
     const [selectedTopic, setSelectedTopic] = useState(null);
     const canvasRef = useRef();
@@ -65,10 +67,17 @@ export default function Home({username}){
             });
 
             setQuestion(response.data.questionDto);
+
             setSuccessStreaksByCategory(prevState => ({
                 ...prevState,
                 [selectedCategory]: response.data.successStreak || 0
             }));
+
+            setCurrentLevelByCategory(prevState => ({
+                ...prevState,
+                [selectedCategory]: response.data.currentLevel || 0
+            }));
+
             setSuccess(null);
             setFeedback(null);
 
@@ -96,6 +105,12 @@ export default function Home({username}){
                 ...prevState,
                 [category]: response.data.successStreak || 0
             }));
+
+            setCurrentLevelByCategory(prevState => ({
+                ...prevState,
+                [category]: response.data.currentLevel || 0
+            }));
+
             setFeedback(null);
             setSuccess(null);
             setShowExplanation(false);
@@ -127,6 +142,7 @@ export default function Home({username}){
             setIsLevelDown(response.data.levelDown);
             setSuccessStreaksByCategory(response.data.successStreaksByCategory);
             setCoinsCredits(response.data.coins);
+            setCurrentLevelByCategory(response.data.currentLevelByCategory);
 
             if (!response.data.success) {
                 setShowSolution(true);
@@ -214,20 +230,6 @@ export default function Home({username}){
         setActiveCategoryHb(handleActiveCategory(category));
     }, [category]);
 
-    const streakMessages = [
-        { min: 1, max: 3, message: "💫 Nice 💫️" },
-        { min: 3, max: 5, message: "⚡️ Excellent ⚡️" },
-        { min: 5, max: 7, message: "🔥 On Fire 🔥" },
-        { min: 7, max: 9, message: "☄️ Wow Amazing ☄️" },
-        { min: 9, max: 10, message: "💥🔥 Boom! One More For Level Up 🔥💥" },
-    ];
-
-    const getStreakMessage = (streak) => {
-        const messageObj = streakMessages.find(
-            (range) => streak >= range.min && streak < range.max
-        );
-        return messageObj ? messageObj.message : "";
-    };
 
     const subtopics = {
         invoice: [
@@ -256,9 +258,19 @@ export default function Home({username}){
     };
 
     return (
-        <div  style={{ display: "flex", alignItems: "flex-start"}}>
+        <div style={{display: "flex", alignItems: "flex-start"}}>
             <div className="sidebar">
                 <CategoryInfoCard activeCategory={activeCategoryHb}/>
+            </div>
+
+            <div className="right-sidebar">
+                <UserInfoCard
+                    category={category}
+                    activeCategory={activeCategoryHb}
+                    successStreaksByCategory={successStreaksByCategory}
+                    coinsCredits={coinsCredits}
+                    currentLevelByCategory={currentLevelByCategory}
+                />
             </div>
 
 
@@ -284,18 +296,22 @@ export default function Home({username}){
 
 
             <div className="home-container">
-                <h1 className="title">Online Learning</h1>
+
+                <Typography className="title" variant="h3" sx={{ fontWeight: "bold", textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}>
+                    Online Learning 📖
+                </Typography>
+
                 <div className="category-selection">
-                    <h2 style={{marginTop: "15px"}}>
-                        <mark style={{borderRadius: "15px"}}>Select Topic:</mark>
-                    </h2>
+                    <Typography  variant="h4" sx={{ fontWeight: "bold", textShadow: "2px 2px 4px rgba(0,0,0,0.3)",color:"purple",marginTop:"25px"}}>
+                        Select Topic 📚️
+                    </Typography>
 
                     <Tabs
                         value={selectedTopic || false}
                         onChange={(event, newValue) => setSelectedTopic(newValue)}
                         variant="scrollable"
                         scrollButtons="auto"
-                        textColor="white"
+                        textColor="inherit"
                         sx={{
                             "& .Mui-selected": {
                                 color: "yellow",
@@ -333,28 +349,6 @@ export default function Home({username}){
                     </div>
                 </div>
 
-                {category &&
-                    <h3 style={{marginTop: "15px"}}>
-                        <mark style={{borderRadius: "15px"}}>Active Category:</mark>
-                        {activeCategoryHb}
-                    </h3>
-                }
-
-                {category && (
-                    <h3 style={{marginTop: "35px"}}>
-                        <mark style={{borderRadius: "15px"}}>Streaks 🔥:</mark>
-                        {successStreaksByCategory[category] || 0}
-                        <div style={{color: successStreaksByCategory[category] > 4 ? "red" : "green", marginTop: "10px"}}>
-                            {getStreakMessage(successStreaksByCategory[category] || 0)}
-                        </div>
-                    </h3>
-                )}
-                {category && (
-                    <h3 style={{marginTop: "35px"}}>
-                        <mark style={{borderRadius: "15px"}}>Coins 🪙:</mark>
-                        {coinsCredits}
-                    </h3>
-                )}
 
                 <div className="question-section">
                     {question && (
