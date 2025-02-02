@@ -15,6 +15,9 @@ import StreaksLevelsAnimation from "../../components/animation/StreaksLevelsAnim
 import {Tabs, Tab, Card, Typography, CardContent} from "@mui/material";
 import CategoryInfoCard from "../../components/dashboard/CategoryInfoCard.jsx";
 import UserInfoCard from "../../components/dashboard/UserInfoCard.jsx";
+import SolutionSteps from "../../components/dashboard/SolutionSteps.jsx";
+import Swal from "sweetalert2";
+import {Tooltip} from "@mui/material";
 
 
 export default function Home({username}){
@@ -38,7 +41,8 @@ export default function Home({username}){
     const [solution,setSolution] = useState("");
     const [showSolution, setShowSolution] = useState(false);
     const [activeCategoryHb, setActiveCategoryHb] = useState("");
-
+    const [showFullSolution, setShowFullSolution] = useState(false);
+    const pendingUpdate = useRef(false);
 
     useEffect(() => {
         const fetchUserCoins = async () => {
@@ -60,6 +64,7 @@ export default function Home({username}){
 
 
     const handleCategorySelection = async (selectedCategory) =>{
+        setShowFullSolution(false);
         try {
             setCategory(selectedCategory);
             const response = await axios.get(URL_SERVER_SIDE + URL_GET_QUESTION,{
@@ -95,6 +100,7 @@ export default function Home({username}){
         try {
             setQuestion(null);
             setSolution("");
+            setShowFullSolution(false);
 
             const response = await axios.get(URL_SERVER_SIDE + URL_GET_QUESTION, {
                 params: { username: username, category },
@@ -197,6 +203,7 @@ export default function Home({username}){
             setTimer(null);
             setCategory(null);
             setFeedback(null);
+            setShowFullSolution(false);
         }
     };
 
@@ -256,6 +263,36 @@ export default function Home({username}){
             console.log("Canvas reference is not set.");
         }
     };
+
+// לעשות בדיקות
+    const updateCoinsOnExit = async () => {
+        if (pendingUpdate && coinsCredits !== null) {
+            try {
+                const response = await axios.post(URL_SERVER_SIDE + `/update-coins/${username}&=${coinsCredits}`);
+                console.log(response.data.error);
+                console.log("Coins updated successfully!");
+                pendingUpdate.current = false;
+            } catch (error) {
+                console.log("Failed to update coins: ", error);
+            }
+        }
+    };
+
+
+    useEffect(() => {
+        updateCoinsOnExit()
+    }, [coinsCredits, username]);
+
+
+    const handleShowFullSolution = () =>{
+        if (coinsCredits > 0){
+            setCoinsCredits(prevCoins => prevCoins - 1)
+            setShowFullSolution(true);
+            pendingUpdate.current = true;
+        }else {
+            Swal.fire("Why can't you perform this action?", "You need coins 🪙 to perform this action.", "question");
+        }
+    }
 
     return (
         <div style={{display: "flex", alignItems: "flex-start"}}>
@@ -416,6 +453,23 @@ export default function Home({username}){
                             }
 
                             <br/>
+
+                            {!showFullSolution ? (
+
+                                    <Tooltip title=" 🪙 עולה מטבע אחד לבצע פעולה זו">
+                                        <span>
+                                            <button
+                                                onClick={handleShowFullSolution}
+                                                className="btn btn-outline-info">
+                                                Full Solution With Steps
+                                            </button>
+                                        </span>
+                                    </Tooltip>
+
+                            ) : (
+                                question.steps && <SolutionSteps steps={question.steps}/>
+                            )}
+
 
                             {!showExplanation && <button
                                 className={"btn - btn-outline-info"}
