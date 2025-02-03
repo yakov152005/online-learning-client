@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import "../../css/ManagerDashboard.css";
 import ChartsDashboardView from "../../components/dashboard/ChartsDashboardView.jsx";
 import TextDashboardView from "../../components/dashboard/TextDashboardView.jsx";
@@ -41,7 +41,7 @@ export default function ManagerDashboard({username}) {
                 }
             });
             if (response.data.success) {
-                const result = response.data;
+                const result = response.data.dashboardDto;
                 setStreaks(result.successStreak);
                 setOpenQuestion(result.openQuestions);
                 setQuestionsAnsweredIncorrectly(result.questionsAnsweredIncorrectly);
@@ -64,11 +64,15 @@ export default function ManagerDashboard({username}) {
         }
     }
 
+    const isFetched = useRef(false);
+
     useEffect(() => {
-        if (username) {
+        if (!isFetched.current && username && token) {
+            isFetched.current = true;
             fetchDashboardDetails();
         }
-    }, [username]);
+    }, [username, token]);
+
 
     if (loading) {
         return (
