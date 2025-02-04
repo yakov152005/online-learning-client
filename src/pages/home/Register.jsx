@@ -269,7 +269,7 @@ export default function Register() {
                                 className="btn-sign"
                                 onClick={handleSubmit}
                             >
-                                Sign Up
+                                <span>Sign Up</span>
                             </button>
 
                             {errorMessage && (

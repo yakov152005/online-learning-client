@@ -147,11 +147,12 @@ export default function Login() {
                                    className="icon-link"
                                    style={{
                                        cursor: "pointer",
-                                       textDecoration: "underline",
+                                       textDecoration: "none",
+                                       fontSize:"14px",
                                        color: "blue",
                                        display: "inline-flex",
                                        alignItems: "center",
-                                       marginLeft: "190px"
+                                       marginLeft: "220px",
                                    }}>
                                     forgot password?
                                 </a>
@@ -161,7 +162,7 @@ export default function Login() {
                                 className="btn-sign"
                                 onClick={handleSubmit}
                             >
-                                Sign in
+                                <span>Sign in</span>
                             </button>
 
                             {errorMessage && (

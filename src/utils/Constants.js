@@ -21,6 +21,9 @@ const NAV_SETTINGS = "/settings";
 const NAV_CHANGE_PASSWORD = "/change-password"
 const NAV_FORGET_PASSWORD = "/forgetPassword";
 const NAV_CONFIRM_RESET = "/confirm-reset";
+const NAV_ACCESSIBILITY = "/accessibility";
+const NAV_TERM_AND_PRIVACY = "/terms-and-privacy";
+
 
 const TIMER_LEVEL_UP = 3000;
 const TIMER_LEVEL_DOWN = 3000;
@@ -50,6 +53,8 @@ export {
     NAV_CHANGE_PASSWORD,
     NAV_FORGET_PASSWORD,
     NAV_CONFIRM_RESET,
+    NAV_TERM_AND_PRIVACY,
+    NAV_ACCESSIBILITY,
     TIMER_LEVEL_UP,
     TIMER_LEVEL_DOWN,
     SECOND,

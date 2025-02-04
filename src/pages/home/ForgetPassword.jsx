@@ -130,7 +130,7 @@ export default function ForgetPassword() {
                             <button
                                 className="btn-sign"
                                 onClick={handleClick}>
-                                Reset password&nbsp;
+                                <span>Reset password&nbsp;</span>
                                 <i className="bi bi-envelope-at"></i>
                             </button>
 

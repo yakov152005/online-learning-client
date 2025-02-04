@@ -4,6 +4,7 @@ import NavBar from "./NavBar.jsx";
 import Register from "../../pages/home/Register.jsx";
 import Login from "../../pages/home/Login.jsx";
 import {
+    NAV_ACCESSIBILITY,
     NAV_CHANGE_PASSWORD,
     NAV_CONFIRM_RESET,
     NAV_DASHBOARD,
@@ -11,7 +12,7 @@ import {
     NAV_ERROR, NAV_EXPLANATION, NAV_FORGET_PASSWORD,
     NAV_HOME,
     NAV_LOGIN,
-    NAV_REGISTER, NAV_SETTINGS,
+    NAV_REGISTER, NAV_SETTINGS, NAV_TERM_AND_PRIVACY,
     SECOND
 } from "../../utils/Constants.js";
 import "../../css/home/LoadingStyle.css"
@@ -27,6 +28,9 @@ import SettingsPage from "../../pages/settings/SettingsPage.jsx";
 import ForgetPassword from "../../pages/home/ForgetPassword.jsx";
 import ConfirmResetPasswordPage from "../../pages/home/ConfirmResetPasswordPage.jsx";
 import ChangePassword from "../../pages/settings/ChangePassword.jsx";
+import Footer from "./Footer.jsx";
+import AccessibilityStatement from "../websiteRegulations/AccessibilityStatement.jsx";
+import TermsOfUse from "../websiteRegulations/TermsAndPrivacy.jsx";
 
 export default function ManagerRoutes() {
     const cookies = new Cookies();
@@ -51,7 +55,9 @@ export default function ManagerRoutes() {
     useEffect(() => {
         if (!token  &&
             location.pathname !== NAV_LOGIN && location.pathname !== NAV_REGISTER
-            && location.pathname !== NAV_FORGET_PASSWORD  && location.pathname !== NAV_CONFIRM_RESET) {
+            && location.pathname !== NAV_FORGET_PASSWORD  && location.pathname !== NAV_CONFIRM_RESET
+            && location.pathname !== NAV_ACCESSIBILITY && location.pathname !== NAV_TERM_AND_PRIVACY
+        ) {
             navigate(NAV_LOGIN);
         } else if (token) {
             fetchToken();
@@ -89,6 +95,11 @@ export default function ManagerRoutes() {
             {!loading && (
 
                     <Routes>
+
+                        <Route path={NAV_ACCESSIBILITY} element={<AccessibilityStatement />} />
+                        <Route path={NAV_TERM_AND_PRIVACY} element={<TermsOfUse />} />
+
+
                         {!token && (
                             <>
                                 <Route path={NAV_DEFAULT} element={<Navigate to={NAV_LOGIN}/>}/>
@@ -112,6 +123,8 @@ export default function ManagerRoutes() {
                         )}
                     </Routes>
             )}
+
+            <Footer />
         </>
     )
 }
