@@ -18,6 +18,7 @@ import UserInfoCard from "../../components/dashboard/UserInfoCard.jsx";
 import SolutionSteps from "../../components/dashboard/SolutionSteps.jsx";
 import Swal from "sweetalert2";
 import {Tooltip} from "@mui/material";
+import NotificationComponent from "../../components/dashboard/NotificationComponent.jsx";
 
 
 export default function Home({username}){
@@ -296,18 +297,28 @@ export default function Home({username}){
 
     return (
         <div style={{display: "flex", alignItems: "flex-start"}}>
+
             <div className="sidebar">
-                <CategoryInfoCard activeCategory={activeCategoryHb}/>
+                <Tooltip title="פרטים על הקטגוריה הפעילה">
+                    <span>
+                        <CategoryInfoCard activeCategory={activeCategoryHb}/>
+                    </span>
+                </Tooltip>
             </div>
 
+
             <div className="right-sidebar">
-                <UserInfoCard
-                    category={category}
-                    activeCategory={activeCategoryHb}
-                    successStreaksByCategory={successStreaksByCategory}
-                    coinsCredits={coinsCredits}
-                    currentLevelByCategory={currentLevelByCategory}
-                />
+                <Tooltip title="פרטים למשתמש">
+                    <span>
+                        <UserInfoCard
+                            category={category}
+                            activeCategory={activeCategoryHb}
+                            successStreaksByCategory={successStreaksByCategory}
+                            coinsCredits={coinsCredits}
+                            currentLevelByCategory={currentLevelByCategory}
+                        />
+                    </span>
+                </Tooltip>
             </div>
 
 
@@ -333,13 +344,19 @@ export default function Home({username}){
 
 
             <div className="home-container">
-
-                <Typography className="title" variant="h3" sx={{ fontWeight: "bold", textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}>
+                <NotificationComponent username={username}/>
+                <Typography className="title" variant="h3"
+                            sx={{fontWeight: "bold", textShadow: "2px 2px 4px rgba(0,0,0,0.3)"}}>
                     Online Learning 📖
                 </Typography>
 
                 <div className="category-selection">
-                    <Typography  variant="h4" sx={{ fontWeight: "bold", textShadow: "2px 2px 4px rgba(0,0,0,0.3)",color:"purple",marginTop:"25px"}}>
+                    <Typography variant="h4" sx={{
+                        fontWeight: "bold",
+                        textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
+                        color: "purple",
+                        marginTop: "25px"
+                    }}>
                         Select Topic 📚️
                     </Typography>
 
@@ -414,13 +431,18 @@ export default function Home({username}){
                                     }
                                 }}
                             />
-                            <button
-                                className={!userAnswer.trim() ? "submit-button-disabled" : "submit-button"}
-                                onClick={handleSubmitAnswer}
-                                disabled={!userAnswer.trim()}
-                            >
-                                Submit Answer
-                            </button>
+                            <Tooltip
+                                title={!userAnswer.trim() ? "הכנס תשובה כדי שהכפתור יפעל" : "אישור התשובה שלך, ושליחתה."}>
+                                        <span>
+                                          <button
+                                              className={!userAnswer.trim() ? "submit-button-disabled" : "submit-button"}
+                                              onClick={handleSubmitAnswer}
+                                              disabled={!userAnswer.trim()}>
+                                              Submit Answer
+                                          </button>
+                                        </span>
+                            </Tooltip>
+
                             {showCanvas ? (
                                 <>
                                     <div className="sketch-container">
@@ -431,32 +453,41 @@ export default function Home({username}){
                                             allowOnlyPointerType="all"
                                         />
                                     </div>
-                                    <button className="clear-button" onClick={clearCanvas}>
-                                        Clear Canvas
-                                    </button>
-                                    <button className="clear-button" onClick={() => {
-                                        setShowCanvas(false)
-                                    }}>
-                                        Hide Canvas
-                                    </button>
+                                    <Tooltip title="נקה לוח ציור">
+                                        <span>
+                                          <button className="clear-button" onClick={clearCanvas}>
+                                              Clear Canvas
+                                          </button>
+                                        </span>
+                                    </Tooltip>
+                                    <Tooltip title="הסתר לוח ציור">
+                                        <span>
+                                          <button className="clear-button" onClick={() => {
+                                              setShowCanvas(false)
+                                          }}>
+                                              Hide Canvas
+                                          </button>
+                                        </span>
+                                    </Tooltip>
                                 </>
                             ) : (
                                 <>
-                                    <button className="clear-button" onClick={() => {
-                                        setShowCanvas(true)
-                                    }}>
-                                        Show Canvas
-                                    </button>
+                                    <Tooltip title="פתח לוח ציור">
+                                        <span>
+                                           <button className="clear-button" onClick={() => {
+                                               setShowCanvas(true)
+                                           }}>
+                                               Show Canvas
+                                           </button>
+                                        </span>
+                                    </Tooltip>
                                 </>
-                            )
-
-                            }
-
+                            )}
                             <br/>
 
                             {!showFullSolution ? (
 
-                                    <Tooltip title=" 🪙 עולה מטבע אחד לבצע פעולה זו">
+                                <Tooltip title=" 🪙 עולה מטבע אחד לבצע פעולה זו">
                                         <span>
                                             <button
                                                 onClick={handleShowFullSolution}
@@ -464,26 +495,36 @@ export default function Home({username}){
                                                 Full Solution With Steps
                                             </button>
                                         </span>
-                                    </Tooltip>
+                                </Tooltip>
 
                             ) : (
                                 question.steps && <SolutionSteps steps={question.steps}/>
                             )}
 
 
-                            {!showExplanation && <button
-                                className={"btn - btn-outline-info"}
-                                onClick={() => setShowExplanation(true)}>
-                                Show Explanation
-                            </button>
+                            {!showExplanation &&
+                                <Tooltip title=" הסבר קצר על התרגיל עם נוסחאות, ללא מטבעות">
+                                        <span>
+                                            <button
+                                                className={"btn - btn-outline-info"}
+                                                onClick={() => setShowExplanation(true)}>
+                                                Show Explanation
+                                            </button>
+                                        </span>
+                                </Tooltip>
                             }
 
                             {showExplanation && (
                                 <>
-                                    <button onClick={() => setShowExplanation(false)}
-                                            className={"btn - btn-outline-info"}
-                                    >Hide Explanation
-                                    </button>
+                                    <Tooltip title=" הסתר את ההסבר">
+                                        <span>
+                                              <button onClick={() => setShowExplanation(false)}
+                                                      className={"btn - btn-outline-info"}>
+                                                  Hide Explanation
+                                              </button>
+                                        </span>
+                                    </Tooltip>
+
                                     <div className="explanation">
                                         {question.explanation.split('*').map((part, index) => (
                                             <React.Fragment key={index}>
@@ -498,21 +539,29 @@ export default function Home({username}){
                     )}
 
                     {(category && !isCountdownActive) && (
-                        <button
-                            className={"btn - btn-outline-info"}
-                            onClick={handleNewQuestion}>
-                            Get New Question
-                        </button>
+                        <Tooltip title=" קבל שאלה חדשה">
+                            <span>
+                                <button
+                                    className={"btn - btn-outline-info"}
+                                    onClick={handleNewQuestion}>
+                                    Get New Question
+                                </button>
+                            </span>
+                        </Tooltip>
                     )}
 
                     {isCountdownActive && (
                         <div>
                             <p>Next question in: {timer} seconds</p>
-                            <button
-                                className={"btn - btn-outline-danger"}
-                                onClick={stopCountdown}>
-                                Stop Question
-                            </button>
+                            <Tooltip title=" עצור את קבלת השאלות, וצא מהקטגוריה הפעילה">
+                            <span>
+                                <button
+                                    className={"btn - btn-outline-danger"}
+                                    onClick={stopCountdown}>
+                                    Stop Question
+                                </button>
+                            </span>
+                            </Tooltip>
                         </div>
                     )}
 

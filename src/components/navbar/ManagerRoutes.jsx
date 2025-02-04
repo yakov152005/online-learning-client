@@ -124,7 +124,9 @@ export default function ManagerRoutes() {
                     </Routes>
             )}
 
-            <Footer />
+            {!token &&
+                <Footer />
+            }
         </>
     )
 }

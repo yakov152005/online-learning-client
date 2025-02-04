@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import "../../css/ManagerDashboard.css";
+import "../../css/dashboard/ManagerDashboard.css";
 import ChartsDashboardView from "../../components/dashboard/ChartsDashboardView.jsx";
 import TextDashboardView from "../../components/dashboard/TextDashboardView.jsx";
 import Cookies from "universal-cookie";
@@ -28,6 +28,7 @@ export default function ManagerDashboard({username}) {
     const [totalSuccessRate, setTotalSuccessRate] = useState(null);
     const [showOpenQuestion, setShowOpenQuestion] = useState(false);
     const [showAnsweredIncorrectly, setShowAnsweredIncorrectly] = useState(false);
+
 
     const fetchDashboardDetails = async () => {
         setLoading(true);

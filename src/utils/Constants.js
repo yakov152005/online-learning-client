@@ -1,4 +1,5 @@
 const URL_SERVER_SIDE = "http://localhost:8080/online-learning";
+const URL_SSE_USER = "http://localhost:8080/sse/stream/user";
 const URL_REGISTER = "/add-user";
 const URL_LOGIN = "/login-user";
 const URL_VALIDATE_TOKEN = "/validateToken";
@@ -32,6 +33,7 @@ const FOR_NEW_QUESTION = 5;
 
 export {
     URL_SERVER_SIDE,
+    URL_SSE_USER,
     URL_REGISTER,
     URL_LOGIN,
     URL_VALIDATE_TOKEN,

@@ -99,15 +99,15 @@
     width: 300%;
     height: 300%;
     background: linear-gradient(135deg, #2c3c8c, #362c8c);
-    transform: rotate(360.5deg);
     transition: top 0.5s ease-in-out, left 0.5s ease-in-out;
-    z-index: 0;
+    z-index: 1;
 }
 
 
 .btn-sign:hover::before {
     top: 0;
     left: 0;
+    transform: rotate(15deg);
 }
 
 
@@ -115,6 +115,7 @@
     color: white;
     border-color: transparent;
     box-shadow: 3px 4px 15px rgba(44, 60, 140, 0.6);
+
 }
 
 
