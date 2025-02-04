@@ -13,20 +13,26 @@ export default function Footer() {
                 </div>
 
                 <div className="social-links">
-                    <a href="https://www.linkedin.com/in/yakov-ben-hemo-8b8557245/" target="_blank" rel="noopener noreferrer">
-                        <FaLinkedin className="social-icon" />
+                    <a href="https://www.linkedin.com/in/yakov-ben-hemo-8b8557245/" target="_blank"
+                       rel="noopener noreferrer">
+                        <FaLinkedin className="social-icon"/>
                     </a>
                     <a href="https://github.com/yakov152005" target="_blank" rel="noopener noreferrer">
-                        <FaGithub className="social-icon" />
+                        <FaGithub className="social-icon"/>
                     </a>
-                    <a href="https://www.facebook.com/profile.php?id=100000346264650" target="_blank" rel="noopener noreferrer">
-                        <FaFacebookF className="social-icon" />
+                    <a href="https://www.facebook.com/profile.php?id=100000346264650" target="_blank"
+                       rel="noopener noreferrer">
+                        <FaFacebookF className="social-icon"/>
                     </a>
                 </div>
+
 
                 <div className="footer-brand">
                     <span>Developed By Yakov Ben-Hemo ©2025 Online Learning System</span>
                 </div>
+
+                <img src={"src/assets/images/OnlineLearningLogo.webp"} alt={"ss"} width={"45px"} height={"45px"}
+                     style={{borderRadius: "15px", marginLeft: "-145px"}}/>
             </div>
         </footer>
     );

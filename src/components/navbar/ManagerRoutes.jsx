@@ -31,6 +31,7 @@ import ChangePassword from "../../pages/settings/ChangePassword.jsx";
 import Footer from "./Footer.jsx";
 import AccessibilityStatement from "../websiteRegulations/AccessibilityStatement.jsx";
 import TermsOfUse from "../websiteRegulations/TermsAndPrivacy.jsx";
+import AdminManager from "../../pages/dashboard/AdminManager.jsx";
 
 export default function ManagerRoutes() {
     const cookies = new Cookies();
@@ -39,12 +40,14 @@ export default function ManagerRoutes() {
     const location = useLocation();
     const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(false);
-
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const fetchToken = async ()=> {
         try {
             const api = new ValidateToken();
-            await api.validateTokenApi(token,navigate,cookies,setUsername);
+            const fetchedUsername = await api.validateTokenApi(token,navigate,cookies,setUsername);
+            console.log("Fetch" + fetchedUsername);
+            setIsAdmin(fetchedUsername.toLowerCase() === "admin");
         }catch (error){
             console.log("Error to fetching token",error);
             cookies.remove("token", { path: "/" });
@@ -89,7 +92,7 @@ export default function ManagerRoutes() {
                 </div>
             )}
 
-            <NavBar isLoggedIn={!!token} onLogout={handleLogout} username={username}/>
+            <NavBar isLoggedIn={!!token} onLogout={handleLogout} username={username} isAdmin={isAdmin}/>
             <ScrollToTop />
 
             {!loading && (
@@ -113,6 +116,13 @@ export default function ManagerRoutes() {
                         )}
                         {token  && (
                             <>
+                                {isAdmin &&
+                                    (
+                                       <>
+                                           <Route path={"/admin"} element={<AdminManager admin={username}/>}/>
+                                       </>
+                                    )
+                                }
                                 <Route path={NAV_HOME} element={<Home username={username}/>}/>
                                 <Route path={NAV_DASHBOARD} element={<ManagerDashboard username={username} />} />
                                 <Route path={NAV_EXPLANATION} element={<ExplanationPage/>}/>

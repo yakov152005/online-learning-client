@@ -10,10 +10,11 @@ import {
 import "../../css/navbar/NavBarStyle.css";
 import BookAnimation from "../animation/BookAnimation.jsx";
 import {Tooltip} from "@mui/material";
-import {IconLogin2, IconUserCircle, IconHome,IconChartBarPopular,IconLogout,IconBook,IconSettings  } from "@tabler/icons-react";
+import {IconLogin2, IconUserCircle, IconHome,IconChartBarPopular,IconLogout,IconBook,IconSettings,IconEyeMinus   } from "@tabler/icons-react";
+
 
 // eslint-disable-next-line react/prop-types
-export default function NavBar({isLoggedIn, onLogout, username}) {
+export default function NavBar({isLoggedIn, onLogout, username, isAdmin}) {
     return (
         <nav className="navbar-container">
             <div className="navbar-content">
@@ -68,6 +69,26 @@ export default function NavBar({isLoggedIn, onLogout, username}) {
 
                     {isLoggedIn && (
                         <>
+                            {isAdmin &&(
+                                <Tooltip title="Admin">
+                                    <li>
+                                        <NavLink
+                                            to={"/admin"}
+                                            className={({isActive}) =>
+                                                isActive ? "nav-link active" : "nav-link"
+                                            }
+                                        >
+                                            <strong> Admin</strong><br/>&nbsp;
+                                            <IconEyeMinus  stroke={2} size={20}
+                                                           style={{
+                                                               marginLeft: "13px",
+                                                               marginTop: "-4px",
+                                                               marginBottom: "2px"
+                                                           }}/>
+                                        </NavLink>
+                                    </li>
+                                </Tooltip>
+                            )}
                             <Tooltip title="Home Page">
                                 <li>
                                     <NavLink

@@ -3,30 +3,29 @@
     margin: 50px auto;
     padding: 20px;
     background: #f9f9f9;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     line-height: 1.8;
-    direction: rtl; /* טקסט מימין לשמאל */
-    text-align: right; /* יישור טקסט לימין */
+    direction: rtl;
+    text-align: right;
 }
 
 .accessibility-container h1,
 .accessibility-container h2 {
-    text-align: right; /* יישור כותרות לימין */
-    font-size: 28px;
-    color: #2c3c8c;
+    text-align: right;
+    font-size: 24px;
+    color: #222;
     margin-bottom: 15px;
 }
 
 .accessibility-container p {
     font-size: 18px;
     color: #555;
-    text-align: right; /* יישור הפסקאות לימין */
+    text-align: right;
 }
 
 .accessibility-container ul {
-    padding-right: 20px; /* הזזת רשימה ימינה */
+    padding-right: 20px;
     list-style-type: disc;
 }
 
@@ -34,7 +33,7 @@
     font-size: 18px;
     color: #444;
     margin-bottom: 8px;
-    text-align: right; /* יישור לרשימת התבליטים */
+    text-align: right;
 }
 
 .accessibility-container a {
