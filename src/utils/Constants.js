@@ -1,7 +1,8 @@
-const URL_SERVER_SIDE = "http://localhost:8080/online-learning";
-const URL_SSE_USER = "http://localhost:8080/sse/stream/user";
-const URL_SEND_MESSAGE = "http://localhost:8080/online-learning/send-message";
-const URL_SEND_EMAIL = "http://localhost:8080/online-learning/send-mail";
+const URL_SERVER = "http://localhost:8080";
+const URL_SERVER_SIDE = URL_SERVER + "/online-learning";
+const URL_SSE_USER = URL_SERVER + "/sse/stream/user";
+const URL_SEND_MESSAGE = "/send-message";
+const URL_SEND_EMAIL = "/send-mail";
 const URL_REGISTER = "/add-user";
 const URL_LOGIN = "/login-user";
 const URL_VALIDATE_TOKEN = "/validateToken";
@@ -13,7 +14,7 @@ const URL_CONFIRM_RESET_PASS = "/confirm-reset-password";
 const URL_CHANGE_PASSWORD = "/change-password";
 const URL_RESET_PASSWORD = "/reset-password";
 const URL_GET_ALL_USERS = "/get-all-users";
-const URL_GET_DASHBOARD_ADMIN = "/get-dashboard-admin";
+
 
 const NAV_HOME = "/home";
 const NAV_REGISTER = "/register";
@@ -51,7 +52,6 @@ export {
     URL_CHANGE_PASSWORD,
     URL_RESET_PASSWORD,
     URL_GET_ALL_USERS,
-    URL_GET_DASHBOARD_ADMIN,
     NAV_HOME,
     NAV_LOGIN,
     NAV_REGISTER,

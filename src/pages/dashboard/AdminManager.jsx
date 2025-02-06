@@ -1,6 +1,5 @@
 import {
     URL_GET_ALL_USERS,
-    URL_GET_DASHBOARD_ADMIN,
     URL_SEND_EMAIL,
     URL_SEND_MESSAGE,
     URL_SERVER_SIDE
@@ -8,7 +7,6 @@ import {
 import {useEffect, useState} from "react";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import TextDashboardView from "../../components/dashboard/TextDashboardView.jsx";
 import {
     Box,
     CardContent,
@@ -20,35 +18,17 @@ import {
     ListItemText,
     Container, List, Button
 } from "@mui/material";
-import QuestionTable from "../../components/dashboard/QuestionTable.jsx";
-import ChartsDashboardView from "../../components/dashboard/ChartsDashboardView.jsx";
 import Swal from "sweetalert2";
+import ManagerDashboard from "./ManagerDashboard.jsx";
 
 
-export default function AdminManager({admin}){
+export default function AdminManager({ admin }){
     const cookies = new Cookies();
     const token = cookies.get("token");
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
-    const [dashboardData, setDashboardData] = useState(null);
-    const [viewMode, setViewMode] = useState("charts");
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
-    const [error, setError] = useState(null);
-    const [streaks, setStreaks] = useState(null);
-    const [openQuestions, setOpenQuestion] = useState(null);
-    const [questionsAnsweredIncorrectly, setQuestionsAnsweredIncorrectly] = useState(null);
-    const [weakPoints, setWeakPoints] = useState(null);
-    const [currentLevels, setCurrentLevels] = useState(null);
-    const [correctAnswersPerCategory, setCorrectAnswersPerCategory] = useState(null);
-    const [incorrectAnswersPerCategory, setIncorrectAnswersPerCategory] = useState(null);
-    const [successRate, setSuccessRate] = useState(null);
-    const [totalCorrectAnswers, setTotalCorrectAnswers] = useState(null);
-    const [totalIncorrectAnswers, setTotalIncorrectAnswers] = useState(null);
-    const [totalUnansweredQuestion, setTotalUnansweredQuestion] = useState(null);
-    const [totalSuccessRate, setTotalSuccessRate] = useState(null);
-    const [showOpenQuestion, setShowOpenQuestion] = useState(false);
-    const [showAnsweredIncorrectly, setShowAnsweredIncorrectly] = useState(false);
     const [username, setUsername] = useState("");
     const [message, setMessage] = useState("");
     const [email, setEmail] = useState("");
@@ -69,7 +49,7 @@ export default function AdminManager({admin}){
         setLoading(true);
 
         try {
-            const response = await axios.post(URL_SEND_MESSAGE, null, {
+            const response = await axios.post(URL_SERVER_SIDE + URL_SEND_MESSAGE, null, {
                 params: {
                     username: username,
                     message: message
@@ -101,7 +81,7 @@ export default function AdminManager({admin}){
         setLoading2(true);
 
         try {
-            const response = await axios.post(URL_SEND_EMAIL, null, {
+            const response = await axios.post(URL_SERVER_SIDE+ URL_SEND_EMAIL, null, {
                 params: {
                     email: email,
                     message: messageToMail
@@ -134,40 +114,6 @@ export default function AdminManager({admin}){
         }
     };
 
-    const fetchUserDashboard = async (targetUsername) => {
-        if (!targetUsername) return;
-
-        try {
-            const response = await axios.get(URL_SERVER_SIDE + URL_GET_DASHBOARD_ADMIN, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-                params: { username: admin, targetUsername: targetUsername }
-            });
-            if (response.data.success) {
-                setSelectedUser(targetUsername)
-                const result = response.data.dashboardDto;
-                setDashboardData(result);
-                setStreaks(result.successStreak);
-                setOpenQuestion(result.openQuestions);
-                setQuestionsAnsweredIncorrectly(result.questionsAnsweredIncorrectly);
-                setWeakPoints(result.weakPoints);
-                setCurrentLevels(result.currentLevels);
-                setCorrectAnswersPerCategory(result.correctAnswersPerCategory);
-                setIncorrectAnswersPerCategory(result.incorrectAnswersPerCategory);
-                setSuccessRate(result.successRate);
-                setTotalCorrectAnswers(result.totalCorrectAnswers);
-                setTotalIncorrectAnswers(result.totalIncorrectAnswers);
-                setTotalUnansweredQuestion(result.totalUnansweredQuestion);
-                setTotalSuccessRate(result.totalSuccessRate);
-            } else {
-                setError(response.data.error);
-            }
-        } catch (error) {
-            setError("Failed to fetch dashboard details.");
-        }
-    }
-
 
     useEffect(() => {
         if (admin && users.length === 0) {
@@ -177,39 +123,9 @@ export default function AdminManager({admin}){
 
 
 
-    if (error) {
-        return (
-            <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-                <Typography color="error">{error}</Typography>
-            </Box>
-        );
-    }
-
     return (
         <div style={{padding: "20px", marginBottom: "40px"}}>
             <div>
-                <div style={{marginBottom: "20px"}}>
-                    <label style={{color: viewMode === "charts" ? "blue" : "gray"}}>
-                        <input
-                            type="radio"
-                            name="viewMode"
-                            value="charts"
-                            checked={viewMode === "charts"}
-                            onChange={() => setViewMode("charts")}
-                        />
-                        Charts View
-                    </label>
-                    <label style={{marginLeft: "15px", color: viewMode === "text" ? "blue" : "gray"}}>
-                        <input
-                            type="radio"
-                            name="viewMode"
-                            value="text"
-                            checked={viewMode === "text"}
-                            onChange={() => setViewMode("text")}
-                        />
-                        Text View
-                    </label>
-                </div>
                 <Container maxWidth="md">
                     <Card sx={{ mt: 4, p: 2 }}>
                         <CardContent>
@@ -218,7 +134,7 @@ export default function AdminManager({admin}){
                             <List>
                                 {users.map((user) => (
                                     <ListItem key={user.username} disablePadding>
-                                        <ListItemButton onClick={() => fetchUserDashboard(user.username)}>
+                                        <ListItemButton onClick={() => setSelectedUser(user.username) } >
                                             <ListItemText primary={user.username} />
                                             <ListItemText primary={user.email} />
                                         </ListItemButton>
@@ -291,82 +207,11 @@ export default function AdminManager({admin}){
                         </CardContent>
                     </Card>
                 </Container>
-                {dashboardData && (
                     <div>
                         <h3>Dashboard of {selectedUser}</h3>
-                        {viewMode === "charts" ? (
-                            <div>
-                                <h3>Charts View</h3>
-                                <ChartsDashboardView
-                                    streaks={streaks}
-                                    weakPoints={weakPoints}
-                                    currentLevels={currentLevels}
-                                    correctAnswersPerCategory={correctAnswersPerCategory}
-                                    incorrectAnswersPerCategory={incorrectAnswersPerCategory}
-                                    successRate={successRate}
-                                    totalCorrectAnswers={totalCorrectAnswers}
-                                    totalIncorrectAnswers={totalIncorrectAnswers}
-                                    totalUnansweredQuestion={totalUnansweredQuestion}
-                                    totalSuccessRate={totalSuccessRate}
-                                />
-                            </div>
-                        ) : (
-                            <div>
-                                <h3>Text View</h3>
-                                <TextDashboardView
-                                    streaks={streaks}
-                                    weakPoints={weakPoints}
-                                    currentLevels={currentLevels}
-                                    correctAnswersPerCategory={correctAnswersPerCategory}
-                                    incorrectAnswersPerCategory={incorrectAnswersPerCategory}
-                                    successRate={successRate}
-                                    totalCorrectAnswers={totalCorrectAnswers}
-                                    totalIncorrectAnswers={totalIncorrectAnswers}
-                                    totalUnansweredQuestion={totalUnansweredQuestion}
-                                    totalSuccessRate={totalSuccessRate}
-                                />
-                            </div>
-                        )}
+                        <ManagerDashboard username={selectedUser}/>
                     </div>
-                )}
             </div>
-
-            <Box className="box-container" display="flex" gap={2}>
-                <Box className="box-section">
-                    {!showOpenQuestion ? (
-                        <button
-                            className={"btn btn-outline-info"}
-                            onClick={() => setShowOpenQuestion(true)}
-                        >
-                            Show Open Questions
-                        </button>
-                    ) : (
-                        <QuestionTable
-                            title="Open Questions"
-                            questions={openQuestions}
-                            onHide={() => setShowOpenQuestion(false)}
-                        />
-                    )}
-                </Box>
-
-
-                <Box className="box-section">
-                    {!showAnsweredIncorrectly ? (
-                        <button
-                            className={"btn btn-outline-info"}
-                            onClick={() => setShowAnsweredIncorrectly(true)}
-                        >
-                            Show Questions for Practice
-                        </button>
-                    ) : (
-                        <QuestionTable
-                            title="Questions for Practice"
-                            questions={questionsAnsweredIncorrectly}
-                            onHide={() => setShowAnsweredIncorrectly(false)}
-                        />
-                    )}
-                </Box>
-            </Box>
         </div>
     );
 

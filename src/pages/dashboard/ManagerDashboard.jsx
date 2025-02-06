@@ -1,8 +1,7 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import "../../css/dashboard/ManagerDashboard.css";
 import ChartsDashboardView from "../../components/dashboard/ChartsDashboardView.jsx";
 import TextDashboardView from "../../components/dashboard/TextDashboardView.jsx";
-import Cookies from "universal-cookie";
 import axios from "axios";
 import {URL_GET_DASHBOARD_USER, URL_SERVER_SIDE} from "../../utils/Constants.js";
 import {Box, CircularProgress, Typography} from "@mui/material";
@@ -10,8 +9,6 @@ import QuestionTable from "../../components/dashboard/QuestionTable.jsx";
 
 export default function ManagerDashboard({username}) {
     const [viewMode, setViewMode] = useState("charts");
-    const cookies = new Cookies();
-    const token = cookies.get("token");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [streaks, setStreaks] = useState(null);
@@ -34,9 +31,6 @@ export default function ManagerDashboard({username}) {
         setLoading(true);
         try {
             const response = await axios.get(URL_SERVER_SIDE + URL_GET_DASHBOARD_USER, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
                 params: {
                     username: username
                 }
@@ -65,14 +59,12 @@ export default function ManagerDashboard({username}) {
         }
     }
 
-    const isFetched = useRef(false);
 
     useEffect(() => {
-        if (!isFetched.current && username && token) {
-            isFetched.current = true;
+        if ( username ) {
             fetchDashboardDetails();
         }
-    }, [username, token]);
+    }, [username]);
 
 
     if (loading) {
